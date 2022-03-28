@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 class Login extends React.Component {
   state = {
@@ -18,7 +17,7 @@ class Login extends React.Component {
     const { email, password } = this.state;
     if (email.length <= 0
     || !REGEX_EMAIL.test(email)
-    || password.length < PASSWORD_LENGTH) {
+    || password.length <= PASSWORD_LENGTH) {
       return true;
     } return false;
   }
@@ -72,14 +71,9 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  // getUserEmailDispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  getUserEmailDispatch: (value) => dispatch(getUserEmail(value)),
-});
-
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;
