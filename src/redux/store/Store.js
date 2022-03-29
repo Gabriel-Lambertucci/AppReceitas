@@ -1,12 +1,11 @@
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-import rootReducers from '../reducers/rootReducer';
+import { configureStore } from '@reduxjs/toolkit';
+import userReducer from '../reducers/userReducer';
 
-const store = createStore(
-  rootReducers,
-  composeWithDevTools(applyMiddleware(thunk)),
-);
+const store = configureStore({
+  reducer: {
+    user: userReducer,
+  },
+});
 
 if (window.Cypress) {
   window.store = store;
