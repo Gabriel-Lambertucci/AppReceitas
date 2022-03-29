@@ -1,9 +1,10 @@
 import React from 'react';
+import Header from '../../components/Header';
 
 function ExploreDrinksIngredients() {
   return (
     <div>
-      <h1>ExploreDrinksIngredients</h1>
+      <Header value="Explore Ingredients" img="false" />
     </div>
   );
 }
