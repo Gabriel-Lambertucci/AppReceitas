@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { userEmail, userPassword } from '../redux/reducers/userReducer';
-import { setLocalStorage } from '../helpers/localStorageHelper';
+import { userEmail, userPassword } from '../../redux/reducers/userReducer';
+import { setLocalStorage } from '../../helpers/localStorageHelper';
 
 function Login({ history }) {
   const dispatch = useDispatch();
@@ -80,5 +80,3 @@ Login.propTypes = {
 };
 
 export default Login;
-
-// Após a submissão, o e-mail de pessoa usuária deve ser salvo em localStorage na chave user no formato { email: email-da-pessoa }.
