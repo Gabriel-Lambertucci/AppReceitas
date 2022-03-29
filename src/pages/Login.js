@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { userEmail, userPassword } from '../redux/reducers/userReducer';
+import { setLocalStorage } from '../helpers/localStorageHelper';
 
-function Login(props) {
+function Login({ history }) {
   const dispatch = useDispatch();
-  const globalState = useSelector((state) => state.user);
-  console.log(globalState);
 
   const [state, setState] = useState({
     email: '',
@@ -27,10 +26,12 @@ function Login(props) {
     } return false;
   };
 
-  const onButtonSubmit = async () => {
+  const OnButtonSubmit = async () => {
     dispatch(userEmail(state.email));
     dispatch(userPassword(state.password));
-    const { history } = props;
+    setLocalStorage('user', { email: state.email });
+    setLocalStorage('mealsToken', 1);
+    setLocalStorage('cocktailsToken', 1);
     history.push('/foods');
   };
 
@@ -63,7 +64,7 @@ function Login(props) {
           type="button"
           data-testid="login-submit-btn"
           disabled={ isDisabled() }
-          onClick={ () => onButtonSubmit() }
+          onClick={ () => OnButtonSubmit() }
         >
           Submit
         </button>
@@ -79,3 +80,5 @@ Login.propTypes = {
 };
 
 export default Login;
+
+// Após a submissão, o e-mail de pessoa usuária deve ser salvo em localStorage na chave user no formato { email: email-da-pessoa }.
