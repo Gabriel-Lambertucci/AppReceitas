@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import NavHeader from './NavHeader';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import '../style/Header.css';
+import NavBar from './NavBar';
 
 export default function Header(props) {
   const [click, setClick] = useState(false);
@@ -12,7 +12,6 @@ export default function Header(props) {
   return (
     <header>
       <div className="header-content">
-        {console.log(click)}
         <Link to="/profile">
           <img
             data-testid="profile-top-btn"
@@ -30,12 +29,12 @@ export default function Header(props) {
             />
           </button>)}
       </div>
-      {click === true ? <NavHeader /> : null}
+      {click === true ? <NavBar /> : null}
     </header>
   );
 }
 
 Header.propTypes = {
   value: PropTypes.string.isRequired,
-  img: PropTypes.bool.isRequired,
+  img: PropTypes.string.isRequired,
 };
