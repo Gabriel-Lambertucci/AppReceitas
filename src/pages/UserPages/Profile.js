@@ -17,7 +17,7 @@ function Profile() {
       <h4 data-testid="profile-email">
         email:
         {' '}
-        {user.email}
+        {user ? user.email : null}
       </h4>
       <Link to="/done-recipes">
         <button data-testid="profile-done-btn" type="button">Done Recipes</button>
