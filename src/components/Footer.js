@@ -3,12 +3,11 @@ import { Link } from 'react-router-dom';
 import drinkIcon from '../images/drinkIcon.svg';
 import exploreIcon from '../images/exploreIcon.svg';
 import mealIcon from '../images/mealIcon.svg';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Footer() {
   return (
     <footer
-      className="fixed-bottom"
+      style={ { position: 'absolute', bottom: 0, right: 0 } }
       data-testid="footer"
     >
       <Link to="/drinks">
