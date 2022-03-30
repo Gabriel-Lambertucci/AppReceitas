@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import drinkIcon from '../images/drinkIcon.svg';
 import exploreIcon from '../images/exploreIcon.svg';
 import mealIcon from '../images/mealIcon.svg';
+import '../style/Footer.css';
 
 function Footer() {
   return (
     <footer
-      style={ { position: 'absolute', bottom: 0, right: 0 } }
+      className="footer"
       data-testid="footer"
     >
       <Link to="/drinks">
