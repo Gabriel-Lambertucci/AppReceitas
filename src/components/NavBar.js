@@ -50,7 +50,7 @@ function NavBar() {
           data-testid="exec-search-btn"
           onClick={ () => dispatch(filterByCategory(categories)) }
         >
-          FILTER
+          SEARCH
         </button>
       </form>
     </div>
