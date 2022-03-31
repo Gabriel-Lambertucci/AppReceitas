@@ -7,7 +7,7 @@ import { dataIsFood } from '../../redux/reducers/dataReducer';
 
 function ExploreDrinks() {
   const dispatch = useDispatch();
-  dispatch(dataIsFood('drink'));
+  dispatch(dataIsFood(false));
   return (
     <div>
       <Header value="Explore Drinks" img="false" />
