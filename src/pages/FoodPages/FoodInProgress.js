@@ -1,18 +1,30 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 function FoodInProgress() {
+  // Trocar 'meals' por 'drinks' na proxima página
+  const APIdata = useSelector((state) => state.data.fetchAPI.meals[0]);
+  const recipeIngredients = APIdata
+    .map((item) => Object.keys(item).match('Ingredient'));
+  console.log(recipeIngredients);
+  const {
+    strMealThumb,
+    strMeal,
+    strCategory,
+    strInstructions,
+  } = APIdata;
+
   return (
     <div>
       <img
-        // Mudar src e alt
-        src="https://conteudo.imguol.com.br/c/entretenimento/77/2021/08/27/alimentacao-saudavel-alimentacao-equlibrada-pizza-salada-fast-food-1630077159002_v2_450x337.jpg"
-        alt="rango detalhado"
+        src={ strMealThumb }
+        alt={ `Recipe for ${strMeal}` }
         data-testid="recipe-photo"
       />
       <h1
         data-testid="recipe-title"
       >
-        Titulo Provisorio
+        { strMeal }
       </h1>
       <button
         type="button"
@@ -29,31 +41,25 @@ function FoodInProgress() {
       <p
         data-testid="recipe-category"
       >
-        Categoria: Italiana
+        { `Recipe with ${strCategory}` }
       </p>
       <ul>
-        <li
-          data-testid={ `${index}-ingredient-step` }
-        >
-          <input
-            type="checkbox"
-          />
-          limão
-        </li>
-        <li>banana</li>
-        <li>alcachofra</li>
-        <li>cereja</li>
-        <li>mirtillo</li>
+        {recipeIngredients.map((item, index) => (
+          <li
+            key={ index }
+            data-testid={ `${index}-ingredient-step` }
+          >
+            <input
+              type="checkbox"
+            />
+            { item }
+          </li>
+        ))}
       </ul>
       <p
         data-testid="instructions"
       >
-        Lorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem
-        IpsumLorem IpsumLorem IpsumLorem
-        IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem
-        IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem
-        IpsumLorem
-        IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem Ipsum
+        { strInstructions }
       </p>
       <button
         type="button"
