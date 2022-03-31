@@ -17,17 +17,17 @@ function NavBar() {
   // Condicional de uso - url x fetch:
   const firstLetter = 'first-letter';
   function fetchChange(byText, byButton) {
-    if (isFood && byButton === 'ingredients') {
+    if (isFood === 'food' && byButton === 'ingredients') {
       setUrl(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${byText}`);
-    } if (isFood && byButton === 'name') {
+    } if (isFood === 'food' && byButton === 'name') {
       setUrl(`https://www.themealdb.com/api/json/v1/1/search.php?s=${byText}`);
-    } if (isFood && byButton === firstLetter) {
+    } if (isFood === 'food' && byButton === firstLetter) {
       setUrl(`https://www.themealdb.com/api/json/v1/1/search.php?f=${byText}`);
-    } if (!isFood && byButton === 'ingredients') {
+    } if (isFood === 'drink' && byButton === 'ingredients') {
       setUrl(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${byText}`);
-    } if (!isFood && byButton === 'name') {
+    } if (isFood === 'drink' && byButton === 'name') {
       setUrl(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${byText}`);
-    } if (!isFood && byButton === firstLetter) {
+    } if (isFood === 'drink' && byButton === firstLetter) {
       setUrl(`https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${byText}`);
     }
   }
