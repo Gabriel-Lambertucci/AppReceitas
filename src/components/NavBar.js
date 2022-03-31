@@ -6,6 +6,7 @@ import { filterByCategory, filterByText } from '../redux/reducers/filterReducer'
 function NavBar() {
   const dispatch = useDispatch();
   const isFood = useSelector((state) => state.data.isFood);
+  const APIdata = useSelector((state) => state.data.fetchAPI);
   // Categoria de Filtros:
   const [categories, setCategories] = useState({
     isFiltering: false,
@@ -17,18 +18,21 @@ function NavBar() {
   // Maldito Lint e sua regra de repetição!!!
   const firstLetter = 'first-letter';
   // Condicional de uso - url x fetch:
-  function fetchChange(byText, byButton) {
-    if (isFood === 'food' && byButton === 'ingredients') {
+  function fetchChangeFoods(byText, byButton) {
+    if (byButton === 'ingredients') {
       setUrl(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${byText}`);
-    } if (isFood === 'food' && byButton === 'name') {
+    } if (byButton === 'name') {
       setUrl(`https://www.themealdb.com/api/json/v1/1/search.php?s=${byText}`);
-    } if (isFood === 'food' && byButton === firstLetter) {
+    } if (byButton === firstLetter) {
       setUrl(`https://www.themealdb.com/api/json/v1/1/search.php?f=${byText}`);
-    } if (isFood === 'drink' && byButton === 'ingredients') {
+    }
+  }
+  function fetchChangeDrinks(byText, byButton) {
+    if (byButton === 'ingredients') {
       setUrl(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${byText}`);
-    } if (isFood === 'drink' && byButton === 'name') {
+    } if (byButton === 'name') {
       setUrl(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${byText}`);
-    } if (isFood === 'drink' && byButton === firstLetter) {
+    } if (byButton === firstLetter) {
       setUrl(`https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${byText}`);
     }
   }
@@ -43,7 +47,11 @@ function NavBar() {
   const handleFilterSubmit = () => {
     dispatch(filterByCategory(categories.searchByCategory));
     dispatch(filterByText(categories.searchByText));
-    fetchChange(categories.searchByText, categories.searchByCategory);
+    console.log(APIdata);
+    // Lida com páginas diferentes de Foods e Drinks
+    return (isFood
+      ? fetchChangeFoods(categories.searchByText, categories.searchByCategory)
+      : fetchChangeDrinks(categories.searchByText, categories.searchByCategory));
   };
   // Manipula valores estipulados para filtros dos Radio Buttons:
   const handleRadioButtonChange = ({ target: { checked, value } }) => (
@@ -54,6 +62,7 @@ function NavBar() {
     if (categories.searchByCategory === firstLetter && value.length > 1) {
       return global.alert('Your search must have only 1 (one) character');
     }
+    console.log(APIdata);
     setCategories({ ...categories, searchByText: value });
   };
 

@@ -4,7 +4,7 @@ import { dataIsFood } from '../../redux/reducers/dataReducer';
 
 function DrinkRecipe() {
   const dispatch = useDispatch();
-  dispatch(dataIsFood('drink'));
+  dispatch(dataIsFood(false));
   return (
     <div>
       <h1>DrinkRecipe</h1>
