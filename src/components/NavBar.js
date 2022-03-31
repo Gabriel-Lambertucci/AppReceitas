@@ -1,57 +1,57 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { dataFetchAPIFood } from '../redux/reducers/dataReducer';
 import { filterByCategory, filterByText } from '../redux/reducers/filterReducer';
 
 function NavBar() {
+  const firstLetter = 'first-letter';
   const dispatch = useDispatch();
-
+  // Categoria de Filtros:
   const [categories, setCategories] = useState({
     isFiltering: false,
     searchByText: '',
     searchByCategory: '',
   });
+  // Categoria de url para fetch
   const [url, setUrl] = useState('');
-
+  // Condicional de uso - url x fetch:
   function fetchChange(byText, byButton) {
-    // const dispatch = useDispatch();
-
-    let link;
-    if (byButton === 'ingredients') {
-      link = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${byText}`;
-      setUrl(link);
+    if (isFood && byButton === 'ingredients') {
+      setUrl(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${byText}`);
+    } if (isFood && byButton === 'name') {
+      setUrl(`https://www.themealdb.com/api/json/v1/1/search.php?s=${byText}`);
+    } if (isFood && byButton === firstLetter) {
+      setUrl(`https://www.themealdb.com/api/json/v1/1/search.php?f=${byText}`);
+    } if (!isFood && byButton === 'ingredients') {
+      setUrl(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${byText}`);
+    } if (!isFood && byButton === 'name') {
+      setUrl(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${byText}`);
+    } if (!isFood && byButton === firstLetter) {
+      setUrl(`https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${byText}`);
     }
-    if (byButton === 'name') {
-      link = `https://www.themealdb.com/api/json/v1/1/search.php?s=${byText}`;
-      setUrl(link);
-    }
-    if (byButton === 'first-letter') {
-      link = `https://www.themealdb.com/api/json/v1/1/search.php?f=${byText}`;
-      setUrl(link);
-    }
-
-    const apiFetch = async (paramURL) => {
-      const response = await fetch(paramURL);
-      const data = await response.json();
-      console.log(data);
-      return data;
-    };
-
-    return (
-      url ? apiFetch(url) : null
-    );
   }
-
+  // setando o fetch com seu devido condicional de uso para cada filtro:
+  useEffect(() => {
+    fetch(url)
+      .then((response) => response.json())
+      .then((state) => dispatch(dataFetchAPIFood(state)))
+      .catch((error) => console.log(error));
+  }, [url, dispatch]);
+  // Manipula botão de Submit dos filtros:
   const handleFilterSubmit = () => {
     dispatch(filterByCategory(categories.searchByCategory));
     dispatch(filterByText(categories.searchByText));
     fetchChange(categories.searchByText, categories.searchByCategory);
   };
-
+  // Manipula valores estipulados para filtros dos Radio Buttons:
   const handleRadioButtonChange = ({ target: { checked, value } }) => (
     checked && setCategories({ ...categories, searchByCategory: value })
   );
-
+  // Manipula valores estipulados filtros do input de texto:
   const handleSearchInputChange = ({ target: { value } }) => {
+    if (categories.searchByCategory === firstLetter && value.length > 1) {
+      return global.alert('Your search must have only 1 (one) character');
+    }
     setCategories({ ...categories, searchByText: value });
   };
 

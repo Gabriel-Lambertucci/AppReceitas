@@ -24,6 +24,9 @@ export const counterSlice = createSlice(
   },
 );
 
-export const { filterByText, filterByCategory } = counterSlice.actions;
+export const {
+  filterIsFiltering,
+  filterByText,
+  filterByCategory } = counterSlice.actions;
 
 export default counterSlice.reducer;
