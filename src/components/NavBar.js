@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { dataFetchAPIFood } from '../redux/reducers/dataReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { dataFetchAPI } from '../redux/reducers/dataReducer';
 import { filterByCategory, filterByText } from '../redux/reducers/filterReducer';
 
 function NavBar() {
-  const firstLetter = 'first-letter';
   const dispatch = useDispatch();
+  const isFood = useSelector((state) => state.data.isFood);
   // Categoria de Filtros:
   const [categories, setCategories] = useState({
     isFiltering: false,
@@ -15,6 +15,7 @@ function NavBar() {
   // Categoria de url para fetch
   const [url, setUrl] = useState('');
   // Condicional de uso - url x fetch:
+  const firstLetter = 'first-letter';
   function fetchChange(byText, byButton) {
     if (isFood && byButton === 'ingredients') {
       setUrl(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${byText}`);
@@ -34,7 +35,7 @@ function NavBar() {
   useEffect(() => {
     fetch(url)
       .then((response) => response.json())
-      .then((state) => dispatch(dataFetchAPIFood(state)))
+      .then((state) => dispatch(dataFetchAPI(state)))
       .catch((error) => console.log(error));
   }, [url, dispatch]);
   // Manipula botão de Submit dos filtros:

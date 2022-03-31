@@ -3,8 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isLoading: false,
   isFood: true,
-  fetchAPIFood: [],
-  fetchAPIDrink: [],
+  fetchAPI: [],
 };
 
 export const counterSlice = createSlice(
@@ -19,10 +18,7 @@ export const counterSlice = createSlice(
         state.whichFetch = action.payload;
       },
       dataFetchAPIFood: (state, action) => {
-        state.fetchAPIFood = action.payload;
-      },
-      dataFetchAPIDrink: (state, action) => {
-        state.fetchAPIDrink = action.payload;
+        state.fetchAPI = action.payload;
       },
     },
   },
@@ -30,8 +26,7 @@ export const counterSlice = createSlice(
 
 export const {
   dataIsLoading,
-  dataWhichFetch,
-  dataFetchAPIFood,
-  dataFetchAPIDrink } = counterSlice.actions;
+  dataIsFood,
+  dataFetchAPI } = counterSlice.actions;
 
 export default counterSlice.reducer;

@@ -8,10 +8,20 @@ function Explore() {
     <div>
       <Header value="Explore" img="false" />
       <Link to="/explore/foods">
-        <button data-testid="explore-foods" type="button">Explore Foods</button>
+        <button
+          data-testid="explore-foods"
+          type="button"
+        >
+          Explore Foods
+        </button>
       </Link>
       <Link to="/explore/drinks">
-        <button data-testid="explore-drinks" type="button">Explore Drinks</button>
+        <button
+          data-testid="explore-drinks"
+          type="button"
+        >
+          Explore Drinks
+        </button>
       </Link>
       <Footer />
     </div>
