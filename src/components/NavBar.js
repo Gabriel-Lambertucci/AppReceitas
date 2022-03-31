@@ -14,8 +14,9 @@ function NavBar() {
   });
   // Categoria de url para fetch
   const [url, setUrl] = useState('');
-  // Condicional de uso - url x fetch:
+  // Maldito Lint e sua regra de repetição!!!
   const firstLetter = 'first-letter';
+  // Condicional de uso - url x fetch:
   function fetchChange(byText, byButton) {
     if (isFood === 'food' && byButton === 'ingredients') {
       setUrl(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${byText}`);
