@@ -5,9 +5,8 @@ function ShareButton({ datatest }) {
   const [copy, setCopy] = useState(false);
 
   const copyURL = () => {
-    urlValue = window.location.href;
-    navigator.clipboard.writeText(urlValue);
     setCopy(true);
+    return navigator.clipboard.writeText(window.location.href);
   };
 
   return (
