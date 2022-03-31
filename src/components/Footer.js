@@ -13,7 +13,11 @@ function Footer() {
     >
       <Link to="/drinks">
         <button type="button">
-          <img src={ drinkIcon } alt="Drink Icon" data-testid="drinks-bottom-btn" />
+          <img
+            src={ drinkIcon }
+            alt="Drink Icon"
+            data-testid="drinks-bottom-btn"
+          />
         </button>
       </Link>
       <Link to="/explore">

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  isFiltering: false,
   searchByText: '',
   searchByCategory: '',
 };
@@ -10,6 +11,9 @@ export const counterSlice = createSlice(
     name: 'filter',
     initialState,
     reducers: {
+      filterIsFiltering: (state, action) => {
+        state.searchByText = action.payload;
+      },
       filterByText: (state, action) => {
         state.searchByText = action.payload;
       },
@@ -20,6 +24,9 @@ export const counterSlice = createSlice(
   },
 );
 
-export const { filterByText, filterByCategory } = counterSlice.actions;
+export const {
+  filterIsFiltering,
+  filterByText,
+  filterByCategory } = counterSlice.actions;
 
 export default counterSlice.reducer;
