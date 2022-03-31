@@ -49,7 +49,7 @@ function NavBar() {
     dispatch(filterByText(categories.searchByText));
     console.log(APIdata);
     // Lida com páginas diferentes de Foods e Drinks
-    return (isFood
+    return (isFood === 'foods'
       ? fetchChangeFoods(categories.searchByText, categories.searchByCategory)
       : fetchChangeDrinks(categories.searchByText, categories.searchByCategory));
   };
@@ -62,7 +62,6 @@ function NavBar() {
     if (categories.searchByCategory === firstLetter && value.length > 1) {
       return global.alert('Your search must have only 1 (one) character');
     }
-    console.log(APIdata);
     setCategories({ ...categories, searchByText: value });
   };
 

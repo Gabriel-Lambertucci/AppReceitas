@@ -1,21 +1,38 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import ShareButton from '../../components/ShareButton';
 import { dataIsFood } from '../../redux/reducers/dataReducer';
 
 function DrinkInProgress() {
   const dispatch = useDispatch();
   dispatch(dataIsFood(false));
-  // Trocar 'meals' por 'drinks' na proxima página
+  const { history } = useHistory();
   const APIdata = useSelector((state) => state.data.fetchAPI.drinks[0]);
+
   const recipeIngredients = APIdata
     .map((item) => Object.keys(item).match('Ingredient'));
-  console.log(recipeIngredients);
+
   const {
+    idDrink,
     strDrinkThumb,
     strDrink,
     strCategory,
+    strAlcoholic,
     strInstructions,
   } = APIdata;
+
+  const toLocalStorage = { cocktails: { [idDrink]: [...recipeIngredients] } };
+
+  useEffect(() => {
+    setLocalStorage('inProgressRecipes', toLocalStorage);
+  });
+
+  const handleFinishedRecipe = () => {
+    history.push('/done-recipes');
+  };
+
+  console.log(recipeIngredients);
 
   return (
     <div>
@@ -29,12 +46,7 @@ function DrinkInProgress() {
       >
         { strDrink }
       </h1>
-      <button
-        type="button"
-        data-testid="share-btn"
-      >
-        Share
-      </button>
+      <ShareButton datatest="share-btn" />
       <button
         type="button"
         data-testid="favorite-btn"
@@ -44,7 +56,7 @@ function DrinkInProgress() {
       <p
         data-testid="recipe-category"
       >
-        { `Recipe with ${strCategory}` }
+        { `${strCategory} (${strAlcoholic})` }
       </p>
       <ul>
         {recipeIngredients.map((item, index) => (
@@ -67,8 +79,9 @@ function DrinkInProgress() {
       <button
         type="button"
         data-testid="finish-recipe-btn"
+        onClick={ () => handleFinishedRecipe() }
       >
-        Favorite
+        Finish!
       </button>
     </div>
   );

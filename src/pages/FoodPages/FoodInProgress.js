@@ -1,18 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import ShareButton from '../../components/ShareButton';
+import { setLocalStorage } from '../../helpers/localStorageHelper';
 
 function FoodInProgress() {
   // Trocar 'meals' por 'drinks' na proxima página
+  const { history } = useHistory();
   const APIdata = useSelector((state) => state.data.fetchAPI.meals[0]);
+
   const recipeIngredients = APIdata
     .map((item) => Object.keys(item).match('Ingredient'));
-  console.log(recipeIngredients);
+
   const {
+    idMeal,
     strMealThumb,
     strMeal,
     strCategory,
     strInstructions,
   } = APIdata;
+
+  const toLocalStorage = { meals: { [idMeal]: [...recipeIngredients] } };
+
+  useEffect(() => {
+    setLocalStorage('inProgressRecipes', toLocalStorage);
+  });
+
+  const handleFinishedRecipe = () => {
+    history.push('/done-recipes');
+  };
+
+  console.log(recipeIngredients);
 
   return (
     <div>
@@ -26,12 +44,7 @@ function FoodInProgress() {
       >
         { strMeal }
       </h1>
-      <button
-        type="button"
-        data-testid="share-btn"
-      >
-        Share
-      </button>
+      <ShareButton datatest="share-btn" />
       <button
         type="button"
         data-testid="favorite-btn"
@@ -64,8 +77,9 @@ function FoodInProgress() {
       <button
         type="button"
         data-testid="finish-recipe-btn"
+        onClick={ () => handleFinishedRecipe() }
       >
-        Favorite
+        Finish!
       </button>
     </div>
   );
