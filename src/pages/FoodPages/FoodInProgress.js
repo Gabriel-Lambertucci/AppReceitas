@@ -35,6 +35,9 @@ function FoodInProgress() {
         <li
           data-testid={ `${index}-ingredient-step` }
         >
+          <input
+            type="checkbox"
+          />
           limão
         </li>
         <li>banana</li>
