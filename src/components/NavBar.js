@@ -41,7 +41,7 @@ function NavBar() {
     fetch(url)
       .then((response) => response.json())
       .then((state) => dispatch(dataFetchAPI(state)))
-      .catch((error) => console.log(error));
+      .catch((error) => error);
   }, [url, dispatch]);
   // Manipula botão de Submit dos filtros:
   const handleFilterSubmit = () => {
@@ -49,6 +49,7 @@ function NavBar() {
     dispatch(filterByText(categories.searchByText));
     console.log(APIdata);
     // Lida com páginas diferentes de Foods e Drinks
+    console.log(isFood);
     return (isFood
       ? fetchChangeFoods(categories.searchByText, categories.searchByCategory)
       : fetchChangeDrinks(categories.searchByText, categories.searchByCategory));
