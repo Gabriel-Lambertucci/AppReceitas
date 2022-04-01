@@ -28,7 +28,7 @@ function Drinks() {
     <>
       <Header value="Drinks" img="true" />
       {isFood ? null : <CategoriesButtonsDrinks /> }
-      {isFood ? null : drinks.filter(
+      {isFood ? <h2>Loading...</h2> : drinks.filter(
         (_item, index) => index < maxDrinks,
       )
         .map((item, index) => (
@@ -37,6 +37,7 @@ function Drinks() {
             name={ item.strDrink }
             src={ item.strDrinkThumb }
             index={ index }
+            id={ item.idDrink }
           />
         ))}
       <Footer />

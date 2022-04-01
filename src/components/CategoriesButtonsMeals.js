@@ -49,11 +49,27 @@ export default function CategoriesButtonsMeals() {
   };
 
   const handleFilterClick = ({ target: { name } }) => {
+    if (name === 'all') {
+      fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=')
+        .then((response) => response.json())
+        .then((responseData) => dispatch(dataFetchAPI(responseData)));
+      return null;
+    }
     auxMealFunction(name);
   };
 
   return (
     <div>
+      {permission ? (
+        <button
+          name="all"
+          data-testid="All-category-filter"
+          type="button"
+          onClick={ (e) => handleFilterClick(e) }
+        >
+          All
+        </button>)
+        : null}
       {permission ? (
         state.filter((__item, index) => index < maxCategories)
           .map((item, index) => (

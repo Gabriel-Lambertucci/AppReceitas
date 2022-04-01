@@ -33,8 +33,9 @@ function Foods() {
             name={ item.strMeal }
             src={ item.strMealThumb }
             index={ index }
+            id={ item.idMeal }
           />
-        )) : null}
+        )) : <h2>Loading...</h2>}
       <Footer />
     </>
   );
