@@ -1,11 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { setLocalStorageId } from '../helpers/localStorageHelper';
 
 export default function FoodsCard(props) {
-  const { name, src, index, id } = props;
+  const { name, src, index, id, history } = props;
+
+  const handleButtonClick = () => {
+    setLocalStorageId('idFood', id);
+    history.push(`/foods/${id}`);
+  };
+
   return (
-    <Link to={ `/foods/${id}` }>
+    <button type="button" onClick={ handleButtonClick }>
       <div data-testid={ `${index}-recipe-card` }>
         <p data-testid={ `${index}-card-name` }>{name}</p>
         <img
@@ -15,7 +21,7 @@ export default function FoodsCard(props) {
           style={ { width: 100 } }
         />
       </div>
-    </Link>
+    </button>
   );
 }
 
@@ -24,4 +30,5 @@ FoodsCard.propTypes = {
   src: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
+  history: PropTypes.func.isRequired,
 };
