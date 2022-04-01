@@ -1,37 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import shareIcon from '../../images/shareIcon.svg';
-import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
-import blackHeartIcon from '../../images/blackHeartIcon.svg';
-import { getLocalStorage,
-  setLocalStorage,
-  filterLocalStorage } from '../../helpers/localStorageHelper';
+import { dataFetchAPI } from '../../redux/reducers/dataReducer';
+import FavoriteButton from '../../components/FavoriteButton';
 // import HorizontalScroll from 'react-scroll-horizontal';
 
 function FoodRecipe(props) {
   const { match: { params: { id } } } = props;
+  const dispatch = useDispatch();
   const videoCode = -11;
   const maxRecommended = 6;
   const [food, setFood] = useState([]);
-  const [arrayFavorites, setArrayFavorites] = useState([]);
-  const [isFavorite, setIsFavorite] = useState(() => {
-    const result = getLocalStorage('favoriteRecipes');
-    if (result) {
-      const bool = result.some((item) => item.id === id);
-      return bool;
-    }
-    return false;
-  });
 
   useEffect(() => {
-    (async () => {
-      const FOOD_BY_ID = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
-      const response = await fetch(FOOD_BY_ID);
-      const data = await response.json();
-      const { meals } = data;
-      setFood(meals);
-    })();
-  }, []);
+    const FOOD_BY_ID = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+    fetch(FOOD_BY_ID)
+      .then((response) => response.json())
+      .then((data) => {
+        setFood(data.meals);
+        dispatch(dataFetchAPI(data.meals));
+      })
+      .catch((error) => console.log(error));
+  }, [id, dispatch]);
 
   const [drink, setDrink] = useState([]);
   useEffect(() => {
@@ -43,29 +34,6 @@ function FoodRecipe(props) {
       setDrink(drinks);
     })();
   }, []);
-
-  const includeFavorite = () => {
-    console.log(isFavorite);
-    const { idMeal, strArea, strCategory, strMeal, strMealThumb } = food[0];
-    const FavoriteFood = [{
-      id: idMeal,
-      type: 'food',
-      nationality: strArea,
-      category: strCategory,
-      alcoholicOrNot: '',
-      name: strMeal,
-      image: strMealThumb,
-    }];
-    setLocalStorage('favoriteRecipes', ...FavoriteFood);
-    setArrayFavorites([...arrayFavorites, ...FavoriteFood]);
-    setIsFavorite(true);
-  };
-
-  const removeFavorite = () => {
-    console.log(isFavorite);
-    filterLocalStorage('favoriteRecipes', id);
-    setIsFavorite(false);
-  };
 
   return (
     <div>
@@ -88,14 +56,16 @@ function FoodRecipe(props) {
               <button data-testid="share-btn" type="button">
                 <img src={ shareIcon } alt="Share Icon" />
               </button>
-              <input
-                type="image"
-                data-testid="favorite-btn"
-                alt="Heart Icon"
-                src={ isFavorite ? blackHeartIcon : whiteHeartIcon }
-                onClick={ isFavorite === false
-                  ? () => includeFavorite()
-                  : () => removeFavorite() }
+              <FavoriteButton
+                localState={ { localId: id } }
+                favProps={ {
+                  favId: item.idDrink,
+                  favType: 'drink',
+                  favNationality: '',
+                  favCategory: item.strCategory,
+                  favAlcoholicOrNot: item.strAlcoholic,
+                  favName: item.strDrink,
+                  favImage: item.strDrinkThumb } }
               />
             </div>
             <div>
@@ -137,7 +107,6 @@ function FoodRecipe(props) {
       <div>
         Recommended
         <div>
-          {console.log(drink)}
           {drink.map(({ strDrink, strDrinkThumb }, index2) => (
             index2 < maxRecommended
             && (

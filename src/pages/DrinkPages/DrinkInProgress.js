@@ -9,7 +9,7 @@ function DrinkInProgress() {
   const dispatch = useDispatch();
   dispatch(dataIsFood(false));
   const { history } = useHistory();
-  const APIdata = useSelector((state) => state.data.fetchAPI.drinks[0]);
+  const APIdata = useSelector((state) => state.data.fetchAPI.drinks);
 
   const recipeIngredients = APIdata
     .map((item) => Object.keys(item).match('Ingredient'));
