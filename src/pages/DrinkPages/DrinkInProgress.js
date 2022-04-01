@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ShareButton from '../../components/ShareButton';
 import { dataIsFood } from '../../redux/reducers/dataReducer';
+import { setLocalStorage } from '../../helpers/localStorageHelper';
 
 function DrinkInProgress() {
   const dispatch = useDispatch();
