@@ -5,7 +5,7 @@ export const setLocalStorage = (key, initialValue) => {
     localStorage.setItem(key, JSON.stringify([...item, initialValue]));
   }
   if (!item) {
-    localStorage.setItem(key, JSON.stringify([initialValue]));
+    localStorage.setItem(key, JSON.stringify(initialValue));
   }
 };
 
