@@ -1,26 +1,37 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import shareIcon from '../../images/shareIcon.svg';
 import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../../images/blackHeartIcon.svg';
-import { setLocalStorage } from '../../helpers/localStorageHelper';
+import { getLocalStorage,
+  setLocalStorage,
+  filterLocalStorage } from '../../helpers/localStorageHelper';
 // import HorizontalScroll from 'react-scroll-horizontal';
 
-function FoodRecipe() {
+function FoodRecipe(props) {
+  const { match: { params: { id } } } = props;
   const videoCode = -11;
   const maxRecommended = 6;
   const [food, setFood] = useState([]);
+  const [arrayFavorites, setArrayFavorites] = useState([]);
+  const [isFavorite, setIsFavorite] = useState(() => {
+    const result = getLocalStorage('favoriteRecipes');
+    if (result) {
+      const bool = result.some((item) => item.id === id);
+      return bool;
+    }
+    return false;
+  });
+
   useEffect(() => {
     (async () => {
-      // const FOOD_BY_ID = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
-      const FOOD_BY_ID = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=52764';
+      const FOOD_BY_ID = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
       const response = await fetch(FOOD_BY_ID);
       const data = await response.json();
       const { meals } = data;
       setFood(meals);
-      console.log('DATA', meals);
     })();
   }, []);
-  console.log('FOOD', food);
 
   const [drink, setDrink] = useState([]);
   useEffect(() => {
@@ -33,43 +44,31 @@ function FoodRecipe() {
     })();
   }, []);
 
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [arrayFavorites, setArrayFavorites] = useState([]);
-  setLocalStorage('favoriteRecipes', arrayFavorites);
-
   const includeFavorite = () => {
+    console.log(isFavorite);
     const { idMeal, strArea, strCategory, strMeal, strMealThumb } = food[0];
-
     const FavoriteFood = [{
       id: idMeal,
       type: 'food',
       nationality: strArea,
       category: strCategory,
-      alcoholocOrNot: '',
+      alcoholicOrNot: '',
       name: strMeal,
       image: strMealThumb,
     }];
-
-    console.log('ARRAYFAVORITES', arrayFavorites);
+    setLocalStorage('favoriteRecipes', ...FavoriteFood);
     setArrayFavorites([...arrayFavorites, ...FavoriteFood]);
-    setLocalStorage('favoriteRecipes', arrayFavorites);
     setIsFavorite(true);
   };
 
   const removeFavorite = () => {
-    console.log('ARRAYFAVORITESREMOVE', arrayFavorites);
-    const magicNumber = 52764;
-    const newArrayFavorites = arrayFavorites
-      .filter(({ id }) => id !== magicNumber);
-    console.log('NEWARRAYFAVORITES', newArrayFavorites);
-    setArrayFavorites(newArrayFavorites);
-    setLocalStorage('favoriteRecipes', arrayFavorites);
+    console.log(isFavorite);
+    filterLocalStorage('favoriteRecipes', id);
     setIsFavorite(false);
   };
 
   return (
     <div>
-      <p>oi</p>
       {
         food.map((item, index) => (
           <div key={ index }>
@@ -78,6 +77,7 @@ function FoodRecipe() {
                 data-testid="recipe-photo"
                 src={ item.strMealThumb }
                 alt={ item.strMeal }
+                style={ { width: '150px' } }
               />
             </div>
             <div>
@@ -90,7 +90,7 @@ function FoodRecipe() {
               </button>
               <input
                 type="image"
-                data-testid="share-btn"
+                data-testid="favorite-btn"
                 alt="Heart Icon"
                 src={ isFavorite ? blackHeartIcon : whiteHeartIcon }
                 onClick={ isFavorite === false
@@ -137,11 +137,12 @@ function FoodRecipe() {
       <div>
         Recommended
         <div>
+          {console.log(drink)}
           {drink.map(({ strDrink, strDrinkThumb }, index2) => (
             index2 < maxRecommended
             && (
               <div data-testid={ `${index2}-recomendation-card` } key={ index2 }>
-                <p>{ strDrink }</p>
+                <p data-testid={ `${index2}-recomendation-title` }>{ strDrink }</p>
                 <img
                   src={ strDrinkThumb }
                   alt={ strDrink }
@@ -155,5 +156,9 @@ function FoodRecipe() {
     </div>
   );
 }
+
+FoodRecipe.propTypes = {
+  match: PropTypes.string.isRequired,
+};
 
 export default FoodRecipe;

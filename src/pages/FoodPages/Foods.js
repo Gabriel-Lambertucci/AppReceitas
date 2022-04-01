@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { dataFetchAPI, dataIsFood } from '../../redux/reducers/dataReducer';
@@ -9,7 +10,8 @@ import CategoriesButtonsMeals from '../../components/CategoriesButtonsMeals';
 
 const maxMeals = 12;
 
-function Foods() {
+function Foods(props) {
+  const { history } = props;
   const dispatch = useDispatch();
   const { isFood, fetchAPI: { meals } } = useSelector((state) => state.data);
   useEffect(() => {
@@ -34,11 +36,16 @@ function Foods() {
             src={ item.strMealThumb }
             index={ index }
             id={ item.idMeal }
+            history={ history }
           />
         )) : <h2>Loading...</h2>}
       <Footer />
     </>
   );
 }
+
+Foods.propTypes = {
+  history: PropTypes.func.isRequired,
+};
 
 export default Foods;
