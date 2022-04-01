@@ -24,7 +24,7 @@ function NavBar() {
     fetch(url)
       .then((response) => response.json())
       .then((state) => dispatch(dataFetchAPI(state)))
-      .catch((error) => console.log(error));
+      .catch((error) => error);
   }, [url, dispatch]);
 
   // Manipula botão de Submit dos filtros:
@@ -34,6 +34,7 @@ function NavBar() {
     console.log(APIdata);
 
     // Lida com páginas diferentes de Foods e Drinks
+    console.log(isFood);
     return (isFood
       ? setUrl(fetchChangeFoods(categories.searchByText, categories.searchByCategory))
       : setUrl(fetchChangeDrinks(categories.searchByText, categories.searchByCategory)));
