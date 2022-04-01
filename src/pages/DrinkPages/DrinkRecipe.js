@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import shareIcon from '../../images/shareIcon.svg';
 import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../../images/blackHeartIcon.svg';
 import { getLocalStorage,
   setLocalStorage,
   filterLocalStorage } from '../../helpers/localStorageHelper';
+import '../../style/DrinkRecipe.css';
 
 function DrinkRecipe(props) {
   const { match: { params: { id } } } = props;
@@ -155,7 +157,15 @@ function DrinkRecipe(props) {
           ))}
         </div>
       </div>
-      <button data-testid="start-recipe-btn" type="button">Start Recipe</button>
+      <Link to={ `/drinks/${id}/in-progress` }>
+        <button
+          data-testid="start-recipe-btn"
+          type="button"
+          className="startRecipeButton"
+        >
+          Start Recipe
+        </button>
+      </Link>
     </div>
   );
 }
