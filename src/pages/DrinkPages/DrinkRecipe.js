@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import shareIcon from '../../images/shareIcon.svg';
-import FavoriteButton from '../../components/FavoriteButton';
 import { Link } from 'react-router-dom';
+import FavoriteButton from '../../components/FavoriteButton';
 import shareIcon from '../../images/shareIcon.svg';
-import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
-import blackHeartIcon from '../../images/blackHeartIcon.svg';
-import { getLocalStorage,
-  setLocalStorage,
-  filterLocalStorage } from '../../helpers/localStorageHelper';
 import '../../style/DrinkRecipe.css';
 
 function DrinkRecipe(props) {
@@ -17,7 +11,6 @@ function DrinkRecipe(props) {
   const videoCode = -11;
   const maxRecommended = 6;
   const { match: { params: { id } } } = props;
-  const { history } = props;
   const [drink, setDrink] = useState([]);
 
   useEffect(() => {
@@ -141,7 +134,6 @@ function DrinkRecipe(props) {
 
 DrinkRecipe.propTypes = {
   match: PropTypes.string.isRequired,
-  history: PropTypes.func.isRequired,
 };
 
 export default DrinkRecipe;

@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import shareIcon from '../../images/shareIcon.svg';
-import { dataInProgress } from '../../redux/reducers/dataReducer';
-import FavoriteButton from '../../components/FavoriteButton';
 import { Link } from 'react-router-dom';
-import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
-import blackHeartIcon from '../../images/blackHeartIcon.svg';
-import { getLocalStorage,
-  setLocalStorage,
-  filterLocalStorage } from '../../helpers/localStorageHelper';
+import shareIcon from '../../images/shareIcon.svg';
+import FavoriteButton from '../../components/FavoriteButton';
 import '../../style/FoodRecipe.css';
 // import HorizontalScroll from 'react-scroll-horizontal';
 
 function FoodRecipe(props) {
   const { match: { params: { id } } } = props;
-  const { history } = props;
   const dispatch = useDispatch();
   const videoCode = -11;
   const maxRecommended = 6;
@@ -141,7 +134,6 @@ function FoodRecipe(props) {
 
 FoodRecipe.propTypes = {
   match: PropTypes.string.isRequired,
-  history: PropTypes.func.isRequired,
 };
 
 export default FoodRecipe;
