@@ -4,7 +4,7 @@ const initialState = {
   isLoading: false,
   isFood: true,
   fetchAPI: [],
-  itemId: '',
+  inProgressRecipe: [],
 };
 
 export const counterSlice = createSlice(
@@ -21,8 +21,8 @@ export const counterSlice = createSlice(
       dataFetchAPI: (state, action) => {
         state.fetchAPI = action.payload;
       },
-      itemId: (state, action) => {
-        state.itemId = action.payload;
+      dataInProgress: (state, action) => {
+        state.inProgressRecipe = [...state.inProgressRecipe, action.payload];
       },
     },
   },
@@ -32,6 +32,6 @@ export const {
   dataIsLoading,
   dataIsFood,
   dataFetchAPI,
-  itemId } = counterSlice.actions;
+  dataInProgress } = counterSlice.actions;
 
 export default counterSlice.reducer;

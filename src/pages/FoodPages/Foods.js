@@ -19,11 +19,10 @@ function Foods(props) {
       .then((response) => response.json())
       .then((responseData) => dispatch(dataFetchAPI(responseData)));
     dispatch(dataIsFood(true));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
-      {console.log(meals, isFood)}
       <Header value="Foods" img="true" />
       <CategoriesButtonsMeals />
       {isFood && meals ? meals.filter(

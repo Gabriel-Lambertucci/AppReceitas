@@ -1,39 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import FavoriteButton from '../../components/FavoriteButton';
 import shareIcon from '../../images/shareIcon.svg';
-import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
-import blackHeartIcon from '../../images/blackHeartIcon.svg';
-import { getLocalStorage,
-  setLocalStorage,
-  filterLocalStorage } from '../../helpers/localStorageHelper';
 import '../../style/DrinkRecipe.css';
 
 function DrinkRecipe(props) {
-  const { match: { params: { id } } } = props;
+  const dispatch = useDispatch();
   const videoCode = -11;
   const maxRecommended = 6;
+  const { match: { params: { id } } } = props;
   const [drink, setDrink] = useState([]);
-  const [arrayFavorites, setArrayFavorites] = useState([]);
-  const [isFavorite, setIsFavorite] = useState(() => {
-    const result = getLocalStorage('favoriteRecipes');
-    if (result) {
-      const bool = result.some((item) => item.id === id);
-      return bool;
-    }
-    return false;
-  });
 
   useEffect(() => {
-    (async () => {
-      const DRINK_BY_ID = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
-      const response = await fetch(DRINK_BY_ID);
-      const data = await response.json();
-      console.log(data);
-      const { drinks } = data;
-      setDrink(drinks);
-    })();
-  }, []);
+    const DRINK_BY_ID = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+    fetch(DRINK_BY_ID)
+      .then((response) => response.json())
+      .then((data) => setDrink(data.drinks))
+      .catch((error) => console.log(error));
+  }, [id, dispatch]);
 
   const [food, setFood] = useState([]);
   useEffect(() => {
@@ -46,33 +32,8 @@ function DrinkRecipe(props) {
     })();
   }, []);
 
-  const includeFavorite = () => {
-    console.log(isFavorite);
-    const { idDrink,
-      strCategory, strAlcoholic, strDrink, strDrinkThumb } = drink[0];
-    const Favoritedrink = [{
-      id: idDrink,
-      type: 'drink',
-      nationality: '',
-      category: strCategory,
-      alcoholicOrNot: strAlcoholic,
-      name: strDrink,
-      image: strDrinkThumb,
-    }];
-    setLocalStorage('favoriteRecipes', ...Favoritedrink);
-    setArrayFavorites([...arrayFavorites, ...Favoritedrink]);
-    setIsFavorite(true);
-  };
-
-  const removeFavorite = () => {
-    console.log(isFavorite);
-    filterLocalStorage('favoriteRecipes', id);
-    setIsFavorite(false);
-  };
-
   return (
     <div>
-      {console.log(drink)}
       {
         drink.map((item, index) => (
           <div key={ index }>
@@ -92,14 +53,16 @@ function DrinkRecipe(props) {
               <button data-testid="share-btn" type="button">
                 <img src={ shareIcon } alt="Share Icon" />
               </button>
-              <input
-                type="image"
-                data-testid="favorite-btn"
-                alt="Heart Icon"
-                src={ isFavorite ? blackHeartIcon : whiteHeartIcon }
-                onClick={ isFavorite === false
-                  ? () => includeFavorite()
-                  : () => removeFavorite() }
+              <FavoriteButton
+                localState={ { localId: id } }
+                favProps={ {
+                  favId: item.idDrink,
+                  favType: 'drink',
+                  favNationality: '',
+                  favCategory: item.strCategory,
+                  favAlcoholicOrNot: item.strAlcoholic,
+                  favName: item.strDrink,
+                  favImage: item.strDrinkThumb } }
               />
             </div>
             <div>
@@ -142,7 +105,6 @@ function DrinkRecipe(props) {
       <div>
         Recommended
         <div>
-          {console.log(food)}
           {food.map(({ strMeal, strMealThumb }, index2) => (
             index2 < maxRecommended
             && (

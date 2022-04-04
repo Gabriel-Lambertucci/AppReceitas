@@ -18,19 +18,19 @@ function Drinks(props) {
     fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=')
       .then((response) => response.json())
       .then((responseData) => dispatch(dataFetchAPI(responseData)));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (drinks !== undefined) {
       dispatch(dataIsFood(false));
     }
-  }, [drinks]);
+  }, [drinks, dispatch]);
 
   return (
     <>
       <Header value="Drinks" img="true" />
-      {console.log(drinks)}
       {isFood ? null : <CategoriesButtonsDrinks /> }
+      {console.log(drinks)}
       {isFood ? <h2>Loading...</h2> : drinks.filter(
         (_item, index) => index < maxDrinks,
       )

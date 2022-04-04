@@ -25,7 +25,7 @@ export default function CategoriesButtonsMeals() {
       setCategories(drinksArray);
       setPermission(true);
     }
-  }, [state]);
+  }, [state, permission]);
 
   const auxMealFunction = (name) => {
     if (clicked.includes(name)) {

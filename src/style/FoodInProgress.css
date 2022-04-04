@@ -1,0 +1,3 @@
+.ingredients_checkbox:checked ~ .ingredients_list {
+  text-decoration: line-through;
+}

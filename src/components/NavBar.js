@@ -2,40 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { dataFetchAPI } from '../redux/reducers/dataReducer';
 import { filterByCategory, filterByText } from '../redux/reducers/filterReducer';
+import { fetchChangeFoods, fetchChangeDrinks } from '../helpers/navBarFilterHelper';
 
 function NavBar() {
   const dispatch = useDispatch();
   const isFood = useSelector((state) => state.data.isFood);
   const APIdata = useSelector((state) => state.data.fetchAPI);
+
   // Categoria de Filtros:
   const [categories, setCategories] = useState({
     isFiltering: false,
     searchByText: '',
     searchByCategory: '',
   });
+
   // Categoria de url para fetch
   const [url, setUrl] = useState('');
-  // Maldito Lint e sua regra de repetição!!!
-  const firstLetter = 'first-letter';
-  // Condicional de uso - url x fetch:
-  function fetchChangeFoods(byText, byButton) {
-    if (byButton === 'ingredients') {
-      setUrl(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${byText}`);
-    } if (byButton === 'name') {
-      setUrl(`https://www.themealdb.com/api/json/v1/1/search.php?s=${byText}`);
-    } if (byButton === firstLetter) {
-      setUrl(`https://www.themealdb.com/api/json/v1/1/search.php?f=${byText}`);
-    }
-  }
-  function fetchChangeDrinks(byText, byButton) {
-    if (byButton === 'ingredients') {
-      setUrl(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${byText}`);
-    } if (byButton === 'name') {
-      setUrl(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${byText}`);
-    } if (byButton === firstLetter) {
-      setUrl(`https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${byText}`);
-    }
-  }
+
   // setando o fetch com seu devido condicional de uso para cada filtro:
   useEffect(() => {
     fetch(url)
@@ -43,27 +26,30 @@ function NavBar() {
       .then((state) => dispatch(dataFetchAPI(state)))
       .catch((error) => error);
   }, [url, dispatch]);
+
   // Manipula botão de Submit dos filtros:
   const handleFilterSubmit = () => {
     dispatch(filterByCategory(categories.searchByCategory));
     dispatch(filterByText(categories.searchByText));
     console.log(APIdata);
+
     // Lida com páginas diferentes de Foods e Drinks
     console.log(isFood);
     return (isFood
-      ? fetchChangeFoods(categories.searchByText, categories.searchByCategory)
-      : fetchChangeDrinks(categories.searchByText, categories.searchByCategory));
+      ? setUrl(fetchChangeFoods(categories.searchByText, categories.searchByCategory))
+      : setUrl(fetchChangeDrinks(categories.searchByText, categories.searchByCategory)));
   };
+
   // Manipula valores estipulados para filtros dos Radio Buttons:
   const handleRadioButtonChange = ({ target: { checked, value } }) => (
     checked && setCategories({ ...categories, searchByCategory: value })
   );
+
   // Manipula valores estipulados filtros do input de texto:
   const handleSearchInputChange = ({ target: { value } }) => {
-    if (categories.searchByCategory === firstLetter && value.length > 1) {
+    if (categories.searchByCategory === 'first-letter' && value.length > 1) {
       return global.alert('Your search must have only 1 (one) character');
     }
-    console.log(APIdata);
     setCategories({ ...categories, searchByText: value });
   };
 
