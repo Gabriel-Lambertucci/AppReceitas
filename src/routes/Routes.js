@@ -31,7 +31,7 @@ function Routes() {
 
         <Route exact path="/foods" component={ Foods } />
         <Route exact path="/foods/:id" component={ FoodRecipe } />
-        <Route path="/foods/:id/in-progress" component={ FoodInProgress } />
+        <Route exact path="/foods/:id/in-progress" component={ FoodInProgress } />
 
         <Route exact path="/drinks" component={ Drinks } />
         <Route exact path="/drinks/:id" component={ DrinkRecipe } />

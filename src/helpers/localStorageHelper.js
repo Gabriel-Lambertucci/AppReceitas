@@ -1,20 +1,29 @@
 export const setLocalStorage = (key, initialValue) => {
-  console.log(initialValue.name);
   const item = JSON.parse(localStorage.getItem(key));
   if (item && (!item.some((element) => initialValue.name === element.name))) {
     localStorage.setItem(key, JSON.stringify([...item, initialValue]));
   }
-  if (!item) {
+  if (!item && key === 'favoriteRecipes') {
+    localStorage.setItem(key, JSON.stringify([initialValue]));
+  } if (!item && key === 'user') {
     localStorage.setItem(key, JSON.stringify(initialValue));
   }
 };
 
+export const setInProgressLocaStore = (key, id, initialValue) => {
+  const item = JSON.parse(localStorage.getItem('inProgressRecipes'));
+  if (!item) {
+    return localStorage.setItem('inProgressRecipes',
+      JSON.stringify({ [key]: { [id]: [...initialValue] } }));
+  } const prevState = JSON.parse(localStorage.getItem('inProgressRecipes'))[key];
+  console.log(prevState);
+  return localStorage.setItem('inProgressRecipes',
+    JSON.stringify({ [key]: { ...prevState, [id]: [...initialValue] } }));
+};
+
 export const filterLocalStorage = (key, value) => {
-  console.log(value);
   const item = JSON.parse(localStorage.getItem(key));
-  console.log(item[0].id);
   if (item.some((element) => value === element.id)) {
-    console.log('entrei');
     const newArray = item.filter((element) => element.id !== value);
     localStorage.setItem(key, JSON.stringify([...newArray]));
   }

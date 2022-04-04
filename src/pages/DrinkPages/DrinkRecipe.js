@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import shareIcon from '../../images/shareIcon.svg';
-import { dataFetchAPI } from '../../redux/reducers/dataReducer';
 import FavoriteButton from '../../components/FavoriteButton';
 
 function DrinkRecipe(props) {
@@ -10,16 +9,14 @@ function DrinkRecipe(props) {
   const videoCode = -11;
   const maxRecommended = 6;
   const { match: { params: { id } } } = props;
+  const { history } = props;
   const [drink, setDrink] = useState([]);
 
   useEffect(() => {
     const DRINK_BY_ID = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
     fetch(DRINK_BY_ID)
       .then((response) => response.json())
-      .then((data) => {
-        setDrink(data.drinks);
-        dispatch(dataFetchAPI(data.drinks));
-      })
+      .then((data) => setDrink(data.drinks))
       .catch((error) => console.log(error));
   }, [id, dispatch]);
 
@@ -121,13 +118,20 @@ function DrinkRecipe(props) {
           ))}
         </div>
       </div>
-      <button data-testid="start-recipe-btn" type="button">Start Recipe</button>
+      <button
+        data-testid="start-recipe-btn"
+        type="button"
+        onClick={ () => history.push(`/drinks/${id}/in-progress`) }
+      >
+        Start Recipe
+      </button>
     </div>
   );
 }
 
 DrinkRecipe.propTypes = {
   match: PropTypes.string.isRequired,
+  history: PropTypes.func.isRequired,
 };
 
 export default DrinkRecipe;

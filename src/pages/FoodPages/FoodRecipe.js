@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import shareIcon from '../../images/shareIcon.svg';
-import { dataFetchAPI } from '../../redux/reducers/dataReducer';
+import { dataInProgress } from '../../redux/reducers/dataReducer';
 import FavoriteButton from '../../components/FavoriteButton';
 // import HorizontalScroll from 'react-scroll-horizontal';
 
 function FoodRecipe(props) {
   const { match: { params: { id } } } = props;
+  const { history } = props;
   const dispatch = useDispatch();
   const videoCode = -11;
   const maxRecommended = 6;
@@ -17,10 +18,7 @@ function FoodRecipe(props) {
     const FOOD_BY_ID = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
     fetch(FOOD_BY_ID)
       .then((response) => response.json())
-      .then((data) => {
-        setFood(data.meals);
-        dispatch(dataFetchAPI(data.meals));
-      })
+      .then((data) => setFood(data.meals))
       .catch((error) => console.log(error));
   }, [id, dispatch]);
 
@@ -59,13 +57,13 @@ function FoodRecipe(props) {
               <FavoriteButton
                 localState={ { localId: id } }
                 favProps={ {
-                  favId: item.idDrink,
-                  favType: 'drink',
-                  favNationality: '',
+                  favId: item.idMeal,
+                  favType: 'food',
+                  favNationality: item.strArea,
                   favCategory: item.strCategory,
-                  favAlcoholicOrNot: item.strAlcoholic,
-                  favName: item.strDrink,
-                  favImage: item.strDrinkThumb } }
+                  favAlcoholicOrNot: '',
+                  favName: item.strMeal,
+                  favImage: item.strMealThumb } }
               />
             </div>
             <div>
@@ -121,13 +119,23 @@ function FoodRecipe(props) {
           ))}
         </div>
       </div>
-      <button data-testid="start-recipe-btn" type="button">Start Recipe</button>
+      <button
+        data-testid="start-recipe-btn"
+        type="button"
+        onClick={ () => {
+          dispatch(dataInProgress(food));
+          history.push(`/foods/${id}/in-progress`);
+        } }
+      >
+        Start Recipe
+      </button>
     </div>
   );
 }
 
 FoodRecipe.propTypes = {
   match: PropTypes.string.isRequired,
+  history: PropTypes.func.isRequired,
 };
 
 export default FoodRecipe;

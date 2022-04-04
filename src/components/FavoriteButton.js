@@ -12,7 +12,7 @@ function FavoriteButton({ localState, favProps }) {
   const { localId } = localState;
   const [isFavorite, setIsFavorite] = useState(() => {
     const result = getLocalStorage('favoriteRecipes');
-    if (result) {
+    if (result && result.length !== 0) {
       const bool = result.some((item) => item.id === localId);
       return bool;
     }
