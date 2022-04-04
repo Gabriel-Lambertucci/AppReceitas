@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import shareIcon from '../../images/shareIcon.svg';
 import FavoriteButton from '../../components/FavoriteButton';
 import '../../style/FoodRecipe.css';
+import ShareButton from '../../components/ShareButton';
 // import HorizontalScroll from 'react-scroll-horizontal';
 
 function FoodRecipe(props) {
@@ -51,9 +51,7 @@ function FoodRecipe(props) {
               <p data-testid="recipe-category">{ item.strCategory }</p>
             </div>
             <div>
-              <button data-testid="share-btn" type="button">
-                <img src={ shareIcon } alt="Share Icon" />
-              </button>
+              <ShareButton datatest="share-btn" />
               <FavoriteButton
                 localState={ { localId: id } }
                 favProps={ {

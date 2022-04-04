@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { userEmail, userPassword } from '../../redux/reducers/userReducer';
-import { setLocalStorage } from '../../helpers/localStorageHelper';
+import { setLocalStorage, setUserLocalStorage } from '../../helpers/localStorageHelper';
 
 function Login({ history }) {
   const dispatch = useDispatch();
@@ -30,8 +30,8 @@ function Login({ history }) {
     dispatch(userEmail(state.email));
     dispatch(userPassword(state.password));
     setLocalStorage('user', { email: state.email });
-    setLocalStorage('mealsToken', 1);
-    setLocalStorage('cocktailsToken', 1);
+    setUserLocalStorage('mealsToken', 1);
+    setUserLocalStorage('cocktailsToken', 1);
     history.push('/foods');
   };
 
