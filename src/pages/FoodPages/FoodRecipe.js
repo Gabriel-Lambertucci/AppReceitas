@@ -4,6 +4,14 @@ import { useDispatch } from 'react-redux';
 import shareIcon from '../../images/shareIcon.svg';
 import { dataInProgress } from '../../redux/reducers/dataReducer';
 import FavoriteButton from '../../components/FavoriteButton';
+import { Link } from 'react-router-dom';
+import shareIcon from '../../images/shareIcon.svg';
+import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../../images/blackHeartIcon.svg';
+import { getLocalStorage,
+  setLocalStorage,
+  filterLocalStorage } from '../../helpers/localStorageHelper';
+import '../../style/FoodRecipe.css';
 // import HorizontalScroll from 'react-scroll-horizontal';
 
 function FoodRecipe(props) {
@@ -119,16 +127,15 @@ function FoodRecipe(props) {
           ))}
         </div>
       </div>
-      <button
-        data-testid="start-recipe-btn"
-        type="button"
-        onClick={ () => {
-          dispatch(dataInProgress(food));
-          history.push(`/foods/${id}/in-progress`);
-        } }
-      >
-        Start Recipe
-      </button>
+      <Link to={ `/foods/${id}/in-progress` }>
+        <button
+          className="startRecipeButton"
+          data-testid="start-recipe-btn"
+          type="button"
+        >
+          Start Recipe
+        </button>
+      </Link>
     </div>
   );
 }
