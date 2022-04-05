@@ -1,5 +1,4 @@
 export const setLocalStorage = (key, initialValue) => {
-  console.log(initialValue.name);
   const item = JSON.parse(localStorage.getItem(key));
   if (item && (!item.some((element) => initialValue.name === element.name))) {
     localStorage.setItem(key, JSON.stringify([...item, initialValue]));

@@ -45,7 +45,6 @@ function FoodRecipe(props) {
   }, []);
 
   const includeFavorite = () => {
-    console.log(isFavorite);
     const { idMeal, strArea, strCategory, strMeal, strMealThumb } = food[0];
     const FavoriteFood = [{
       id: idMeal,
@@ -62,7 +61,6 @@ function FoodRecipe(props) {
   };
 
   const removeFavorite = () => {
-    console.log(isFavorite);
     filterLocalStorage('favoriteRecipes', id);
     setIsFavorite(false);
   };
@@ -137,7 +135,6 @@ function FoodRecipe(props) {
       <div>
         Recommended
         <div>
-          {console.log(drink)}
           {drink.map(({ strDrink, strDrinkThumb }, index2) => (
             index2 < maxRecommended
             && (
