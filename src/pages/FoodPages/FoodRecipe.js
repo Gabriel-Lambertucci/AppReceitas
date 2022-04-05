@@ -1,37 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import shareIcon from '../../images/shareIcon.svg';
-import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
-import blackHeartIcon from '../../images/blackHeartIcon.svg';
-import { getLocalStorage,
-  setLocalStorage,
-  filterLocalStorage } from '../../helpers/localStorageHelper';
-// import HorizontalScroll from 'react-scroll-horizontal';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import FavoriteButton from '../../components/FavoriteButton';
+import '../../style/FoodRecipe.css';
+import ShareButton from '../../components/ShareButton';
+import { getInProgressLocalStorage,
+  getLocalStorage } from '../../helpers/localStorageHelper';
 
 function FoodRecipe(props) {
   const { match: { params: { id } } } = props;
+  const dispatch = useDispatch();
   const videoCode = -11;
   const maxRecommended = 6;
   const [food, setFood] = useState([]);
-  const [arrayFavorites, setArrayFavorites] = useState([]);
-  const [isFavorite, setIsFavorite] = useState(() => {
-    const result = getLocalStorage('favoriteRecipes');
-    if (result) {
-      const bool = result.some((item) => item.id === id);
-      return bool;
-    }
-    return false;
-  });
+  const [isInLocalStorage, setIsInLocalStorage] = useState(false);
+  const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      const FOOD_BY_ID = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
-      const response = await fetch(FOOD_BY_ID);
-      const data = await response.json();
-      const { meals } = data;
-      setFood(meals);
-    })();
-  }, []);
+    const FOOD_BY_ID = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+    fetch(FOOD_BY_ID)
+      .then((response) => response.json())
+      .then((data) => setFood(data.meals))
+      .catch((error) => console.log(error));
+    const objectMeals = getInProgressLocalStorage('meals');
+    if (objectMeals) {
+      const result = Object.keys(objectMeals).some((item) => item === id);
+      setIsInLocalStorage(result);
+    }
+    const Done = getLocalStorage('doneRecipes');
+    if (Done) {
+      const isThere = Done.some((item) => item.id === id);
+      if (isThere) {
+        setIsDone(true);
+      }
+    }
+  }, [id, dispatch]);
 
   const [drink, setDrink] = useState([]);
   useEffect(() => {
@@ -43,28 +47,7 @@ function FoodRecipe(props) {
       setDrink(drinks);
     })();
   }, []);
-
-  const includeFavorite = () => {
-    const { idMeal, strArea, strCategory, strMeal, strMealThumb } = food[0];
-    const FavoriteFood = [{
-      id: idMeal,
-      type: 'food',
-      nationality: strArea,
-      category: strCategory,
-      alcoholicOrNot: '',
-      name: strMeal,
-      image: strMealThumb,
-    }];
-    setLocalStorage('favoriteRecipes', ...FavoriteFood);
-    setArrayFavorites([...arrayFavorites, ...FavoriteFood]);
-    setIsFavorite(true);
-  };
-
-  const removeFavorite = () => {
-    filterLocalStorage('favoriteRecipes', id);
-    setIsFavorite(false);
-  };
-
+  
   return (
     <div>
       {
@@ -83,17 +66,17 @@ function FoodRecipe(props) {
               <p data-testid="recipe-category">{ item.strCategory }</p>
             </div>
             <div>
-              <button data-testid="share-btn" type="button">
-                <img src={ shareIcon } alt="Share Icon" />
-              </button>
-              <input
-                type="image"
-                data-testid="favorite-btn"
-                alt="Heart Icon"
-                src={ isFavorite ? blackHeartIcon : whiteHeartIcon }
-                onClick={ isFavorite === false
-                  ? () => includeFavorite()
-                  : () => removeFavorite() }
+              <ShareButton datatest="share-btn" />
+              <FavoriteButton
+                localState={ { localId: id } }
+                favProps={ {
+                  favId: item.idMeal,
+                  favType: 'food',
+                  favNationality: item.strArea,
+                  favCategory: item.strCategory,
+                  favAlcoholicOrNot: '',
+                  favName: item.strMeal,
+                  favImage: item.strMealThumb } }
               />
             </div>
             <div>
@@ -149,7 +132,18 @@ function FoodRecipe(props) {
           ))}
         </div>
       </div>
-      <button data-testid="start-recipe-btn" type="button">Start Recipe</button>
+      {console.log(isDone)}
+      { isDone ? null : (
+        <Link to={ `/foods/${id}/in-progress` }>
+          <button
+            className="startRecipeButton"
+            data-testid="start-recipe-btn"
+            type="button"
+          >
+            {isInLocalStorage ? 'Continue Recipe' : 'Start Recipe'}
+          </button>
+        </Link>
+      )}
     </div>
   );
 }
