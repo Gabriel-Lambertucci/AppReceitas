@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { Carousel } from 'react-responsive-carousel';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import FavoriteButton from '../../components/FavoriteButton';
 import '../../style/FoodRecipe.css';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import ShareButton from '../../components/ShareButton';
 import { getInProgressLocalStorage,
   getLocalStorage } from '../../helpers/localStorageHelper';
@@ -118,18 +120,20 @@ function FoodRecipe(props) {
       <div>
         Recommended
         <div>
-          {drink.map(({ strDrink, strDrinkThumb }, index2) => (
-            index2 < maxRecommended
-            && (
-              <div data-testid={ `${index2}-recomendation-card` } key={ index2 }>
-                <p data-testid={ `${index2}-recomendation-title` }>{ strDrink }</p>
-                <img
-                  src={ strDrinkThumb }
-                  alt={ strDrink }
-                />
-              </div>
-            )
-          ))}
+          <Carousel>
+            {drink.map(({ strDrink, strDrinkThumb }, index2) => (
+              index2 < maxRecommended
+              && (
+                <div data-testid={ `${index2}-recomendation-card` } key={ index2 }>
+                  <p data-testid={ `${index2}-recomendation-title` }>{ strDrink }</p>
+                  <img
+                    src={ strDrinkThumb }
+                    alt={ strDrink }
+                  />
+                </div>
+              )
+            ))}
+          </Carousel>
         </div>
       </div>
       {console.log(isDone)}
