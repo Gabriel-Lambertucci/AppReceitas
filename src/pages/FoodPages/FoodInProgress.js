@@ -6,7 +6,9 @@ import { dataIsFood } from '../../redux/reducers/dataReducer';
 // import { setLocalStorage } from '../../helpers/localStorageHelper';
 import '../../style/FoodInProgress.css';
 import FavoriteButton from '../../components/FavoriteButton';
-import { setInProgressLocaStore } from '../../helpers/localStorageHelper';
+import { setInProgressLocalStorageMeals,
+  getInProgressLocalStorage,
+  setDoneRecipesLocalStorage } from '../../helpers/localStorageHelper';
 
 function FoodInProgress(props) {
   // Trocar 'meals' por 'drinks' na proxima página
@@ -14,6 +16,7 @@ function FoodInProgress(props) {
   const dispatch = useDispatch();
   const [food, setFood] = useState([]);
   const [isFinished, setIsFinished] = useState(true);
+  const [riskItem, setRiskItem] = useState([]);
 
   useEffect(() => {
     const FOOD_BY_ID = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
@@ -23,7 +26,7 @@ function FoodInProgress(props) {
         setFood(data.meals);
         dispatch(dataIsFood(true));
       })
-      .catch((error) => console.log(error));
+      .catch((error) => error);
   }, [id, dispatch]);
 
   const recipeIngredients = (food.length === 0 ? null : Object.entries(food[0])
@@ -41,6 +44,14 @@ function FoodInProgress(props) {
   const recipeIngredientsAndMesures = (food.length === 0 ? null : recipeIngredients
     .map((item, index) => `${recipeMesures[index]} - ${item}`));
 
+  useEffect(() => {
+    const mealsObject = getInProgressLocalStorage('meals');
+    if (mealsObject) {
+      const ingredientsArray = mealsObject[id];
+      setRiskItem(ingredientsArray);
+    }
+  }, [food, id]);
+
   const onCheckboxChange = () => {
     const checkedList = Array.from(document.querySelectorAll('.ingredients_checkbox'));
     const everyChecked = checkedList.every((item) => item.checked);
@@ -52,11 +63,12 @@ function FoodInProgress(props) {
     const filterLocalStorage = checkedList
       .map((item) => (item.checked && item.name))
       .filter((item) => item !== false);
-    console.log(filterLocalStorage);
-    setInProgressLocaStore('meals', id, filterLocalStorage);
+    setRiskItem(filterLocalStorage);
+    setInProgressLocalStorageMeals(id, filterLocalStorage);
   };
 
   const handleFinishedRecipe = () => {
+    setDoneRecipesLocalStorage(id);
     history.push('/done-recipes');
   };
 
@@ -101,6 +113,9 @@ function FoodInProgress(props) {
                     data-testid={ `${index}-ingredient-step` }
                   >
                     <input
+                      checked={ riskItem && riskItem.some((element) => (
+                        index === parseInt(element, 10)
+                      )) }
                       name={ index }
                       className="ingredients_checkbox"
                       type="checkbox"

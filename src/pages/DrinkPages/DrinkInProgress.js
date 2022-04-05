@@ -6,7 +6,9 @@ import { dataIsFood } from '../../redux/reducers/dataReducer';
 // import { setLocalStorage } from '../../helpers/localStorageHelper';
 import '../../style/FoodInProgress.css';
 import FavoriteButton from '../../components/FavoriteButton';
-import { setInProgressLocaStore } from '../../helpers/localStorageHelper';
+import { setInProgressLocalStorageDrinks,
+  getInProgressLocalStorage,
+  setDoneRecipesLocalStorage } from '../../helpers/localStorageHelper';
 
 function DrinkInProgress(props) {
   // Trocar 'meals' por 'drinks' na proxima página
@@ -15,6 +17,7 @@ function DrinkInProgress(props) {
   dispatch(dataIsFood(false));
   const [drink, setDrink] = useState([]);
   const [isFinished, setIsFinished] = useState(true);
+  const [riskItem, setRiskItem] = useState([]);
 
   useEffect(() => {
     const DRINKS_BY_ID = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
@@ -42,6 +45,14 @@ function DrinkInProgress(props) {
   const recipeIngredientsAndMesures = (drink.length === 0 ? null : recipeIngredients
     .map((item, index) => `${recipeMesures[index]} - ${item}`));
 
+  useEffect(() => {
+    const drinksObject = getInProgressLocalStorage('cocktails');
+    if (drinksObject) {
+      const ingredientsArray = drinksObject[id];
+      setRiskItem(ingredientsArray);
+    }
+  }, [id]);
+
   const onCheckboxChange = () => {
     const checkedList = Array.from(document.querySelectorAll('.ingredients_checkbox'));
     const everyChecked = checkedList.every((item) => item.checked);
@@ -53,11 +64,12 @@ function DrinkInProgress(props) {
     const filterLocalStorage = checkedList
       .map((item) => (item.checked && item.name))
       .filter((item) => item !== false);
-    console.log(filterLocalStorage);
-    setInProgressLocaStore('cocktails', id, filterLocalStorage);
+    setRiskItem(filterLocalStorage);
+    setInProgressLocalStorageDrinks(id, filterLocalStorage);
   };
 
   const handleFinishedRecipe = () => {
+    setDoneRecipesLocalStorage(id);
     history.push('/done-recipes');
   };
 
@@ -102,6 +114,9 @@ function DrinkInProgress(props) {
                     data-testid={ `${index}-ingredient-step` }
                   >
                     <input
+                      checked={ riskItem && riskItem.some((element) => (
+                        index === parseInt(element, 10)
+                      )) }
                       name={ index }
                       className="ingredients_checkbox"
                       type="checkbox"

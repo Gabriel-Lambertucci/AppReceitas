@@ -2,6 +2,16 @@ export const setUserLocalStorage = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
+export const setDoneRecipesLocalStorage = (value) => {
+  const item = JSON.parse(localStorage.getItem('doneRecipes'));
+  if (!item) {
+    localStorage.setItem('doneRecipes', JSON.stringify([{ id: value }]));
+  } else {
+    const prevState = JSON.parse(localStorage.getItem('doneRecipes'));
+    localStorage.setItem('doneRecipes', JSON.stringify([...prevState, { id: value }]));
+  }
+};
+
 export const setLocalStorage = (key, initialValue) => {
   const item = JSON.parse(localStorage.getItem(key));
   if (item && (!item.some((element) => initialValue.name === element.name))) {
@@ -14,15 +24,37 @@ export const setLocalStorage = (key, initialValue) => {
   }
 };
 
-export const setInProgressLocaStore = (key, id, initialValue) => {
+export const setInProgressLocalStorageMeals = (id, initialValue) => {
   const item = JSON.parse(localStorage.getItem('inProgressRecipes'));
   if (!item) {
     return localStorage.setItem('inProgressRecipes',
-      JSON.stringify({ [key]: { [id]: [...initialValue] } }));
-  } const prevState = JSON.parse(localStorage.getItem('inProgressRecipes'))[key];
-  console.log(prevState);
+      JSON.stringify({ meals: { [id]: [...initialValue] } }));
+  } const prevStateFoods = JSON.parse(localStorage.getItem('inProgressRecipes')).meals;
+  const prevStateDrinks = JSON.parse(localStorage.getItem('inProgressRecipes')).cocktails;
   return localStorage.setItem('inProgressRecipes',
-    JSON.stringify({ [key]: { ...prevState, [id]: [...initialValue] } }));
+    JSON.stringify(
+      {
+        cocktails: { ...prevStateDrinks },
+        meals: { ...prevStateFoods, [id]: [...initialValue] },
+      },
+    ));
+};
+
+export const setInProgressLocalStorageDrinks = (id, initialValue) => {
+  const item = JSON.parse(localStorage.getItem('inProgressRecipes'));
+  if (!item) {
+    return localStorage.setItem('inProgressRecipes',
+      JSON.stringify({ cocktails: { [id]: [...initialValue] } }));
+  }
+  const prevStateDrinks = JSON.parse(localStorage.getItem('inProgressRecipes')).cocktails;
+  const prevStateFoods = JSON.parse(localStorage.getItem('inProgressRecipes')).meals;
+  return localStorage.setItem('inProgressRecipes',
+    JSON.stringify(
+      {
+        meals: { ...prevStateFoods },
+        cocktails: { ...prevStateDrinks, [id]: [...initialValue] },
+      },
+    ));
 };
 
 export const filterLocalStorage = (key, value) => {
@@ -34,6 +66,14 @@ export const filterLocalStorage = (key, value) => {
 };
 
 export const getLocalStorage = (key) => JSON.parse(localStorage.getItem(key));
+
+export const getInProgressLocalStorage = (key) => {
+  const object = JSON.parse(localStorage.getItem('inProgressRecipes'));
+  if (object) {
+    return object[key];
+  }
+  return null;
+};
 
 export const removeKeyLocalStorage = (key) => localStorage.removeItem(key);
 

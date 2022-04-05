@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import FavoriteButton from '../../components/FavoriteButton';
-import shareIcon from '../../images/shareIcon.svg';
 import '../../style/DrinkRecipe.css';
+import { getInProgressLocalStorage,
+  getLocalStorage } from '../../helpers/localStorageHelper';
+import ShareButton from '../../components/ShareButton';
 
 function DrinkRecipe(props) {
   const dispatch = useDispatch();
@@ -12,6 +14,8 @@ function DrinkRecipe(props) {
   const maxRecommended = 6;
   const { match: { params: { id } } } = props;
   const [drink, setDrink] = useState([]);
+  const [isInLocalStorage, setIsInLocalStorage] = useState(false);
+  const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
     const DRINK_BY_ID = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
@@ -19,6 +23,18 @@ function DrinkRecipe(props) {
       .then((response) => response.json())
       .then((data) => setDrink(data.drinks))
       .catch((error) => console.log(error));
+    const objectDrinks = getInProgressLocalStorage('cocktails');
+    if (objectDrinks) {
+      const result = Object.keys(objectDrinks).some((item) => item === id);
+      setIsInLocalStorage(result);
+    }
+    const Done = getLocalStorage('doneRecipes');
+    if (Done) {
+      const isThere = Done.some((item) => item.id === id);
+      if (isThere) {
+        setIsDone(true);
+      }
+    }
   }, [id, dispatch]);
 
   const [food, setFood] = useState([]);
@@ -50,9 +66,7 @@ function DrinkRecipe(props) {
               <p data-testid="recipe-category">{ item.strAlcoholic }</p>
             </div>
             <div>
-              <button data-testid="share-btn" type="button">
-                <img src={ shareIcon } alt="Share Icon" />
-              </button>
+              <ShareButton datatest="share-btn" />
               <FavoriteButton
                 localState={ { localId: id } }
                 favProps={ {
@@ -119,15 +133,16 @@ function DrinkRecipe(props) {
           ))}
         </div>
       </div>
-      <Link to={ `/drinks/${id}/in-progress` }>
-        <button
-          data-testid="start-recipe-btn"
-          type="button"
-          className="startRecipeButton"
-        >
-          Start Recipe
-        </button>
-      </Link>
+      {isDone ? null : (
+        <Link to={ `/drinks/${id}/in-progress` }>
+          <button
+            data-testid="start-recipe-btn"
+            type="button"
+            className="startRecipeButton"
+          >
+            {isInLocalStorage ? 'Continue Recipe' : 'Start Recipe'}
+          </button>
+        </Link>)}
     </div>
   );
 }

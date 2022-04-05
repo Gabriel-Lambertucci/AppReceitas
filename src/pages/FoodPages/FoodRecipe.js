@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import FavoriteButton from '../../components/FavoriteButton';
 import '../../style/FoodRecipe.css';
 import ShareButton from '../../components/ShareButton';
+import { getInProgressLocalStorage,
+  getLocalStorage } from '../../helpers/localStorageHelper';
 
 function FoodRecipe(props) {
   const { match: { params: { id } } } = props;
@@ -12,6 +14,8 @@ function FoodRecipe(props) {
   const videoCode = -11;
   const maxRecommended = 6;
   const [food, setFood] = useState([]);
+  const [isInLocalStorage, setIsInLocalStorage] = useState(false);
+  const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
     const FOOD_BY_ID = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
@@ -19,6 +23,18 @@ function FoodRecipe(props) {
       .then((response) => response.json())
       .then((data) => setFood(data.meals))
       .catch((error) => console.log(error));
+    const objectMeals = getInProgressLocalStorage('meals');
+    if (objectMeals) {
+      const result = Object.keys(objectMeals).some((item) => item === id);
+      setIsInLocalStorage(result);
+    }
+    const Done = getLocalStorage('doneRecipes');
+    if (Done) {
+      const isThere = Done.some((item) => item.id === id);
+      if (isThere) {
+        setIsDone(true);
+      }
+    }
   }, [id, dispatch]);
 
   const [drink, setDrink] = useState([]);
@@ -116,15 +132,18 @@ function FoodRecipe(props) {
           ))}
         </div>
       </div>
-      <Link to={ `/foods/${id}/in-progress` }>
-        <button
-          className="startRecipeButton"
-          data-testid="start-recipe-btn"
-          type="button"
-        >
-          Start Recipe
-        </button>
-      </Link>
+      {console.log(isDone)}
+      { isDone ? null : (
+        <Link to={ `/foods/${id}/in-progress` }>
+          <button
+            className="startRecipeButton"
+            data-testid="start-recipe-btn"
+            type="button"
+          >
+            {isInLocalStorage ? 'Continue Recipe' : 'Start Recipe'}
+          </button>
+        </Link>
+      )}
     </div>
   );
 }
