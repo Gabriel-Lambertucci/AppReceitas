@@ -2,3 +2,11 @@
   bottom: 0;
   position: fixed;
 }
+
+.carousel-inner {
+  display: flex;
+}
+
+.carousel-item {
+  width: 50%;
+}
