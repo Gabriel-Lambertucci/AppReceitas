@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-// import ShareButton from '../../components/ShareButton';
-import BlackHeartIcon from '../../images/blackHeartIcon.svg';
+import ShareButton from '../../components/ShareButton';
+import FavoriteButton from '../../components/FavoriteButton';
 import { getLocalStorage } from '../../helpers/localStorageHelper';
 import '../../style/Favorite.css';
 
@@ -86,13 +86,23 @@ function FavoriteRecipes() {
                 </h1>
               </a>
             </div>
-            <button type="button">
-              <img
-                data-testid={ `${index}-horizontal-favorite-btn` }
-                src={ BlackHeartIcon }
-                alt="favorite"
-              />
-            </button>
+            <FavoriteButton
+              datatest={ `${index}-horizontal-favorite-btn` }
+              localState={ { localId: item.id } }
+              favProps={ {
+                favId: item.id,
+                favType: item.type,
+                favNationality: item.nationality,
+                favCategory: item.category,
+                favAlcoholicOrNot: item.alcoholicOrNot,
+                favName: item.name,
+                favImage: item.image } }
+            />
+            <ShareButton
+              datatest={ `${index}-horizontal-share-btn` }
+              link={ item.type !== 'food' ? `http://localhost:3000/drinks/${item.id}`
+                : `http://localhost:3000/foods/${item.id}` }
+            />
           </div>
         ))}
       <Footer />

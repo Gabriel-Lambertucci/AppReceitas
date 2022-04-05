@@ -47,7 +47,7 @@ function FoodRecipe(props) {
       setDrink(drinks);
     })();
   }, []);
-  
+
   return (
     <div>
       {
