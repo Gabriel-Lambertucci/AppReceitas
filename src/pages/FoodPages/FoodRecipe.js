@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import FavoriteButton from '../../components/FavoriteButton';
 import '../../style/FoodRecipe.css';
 import ShareButton from '../../components/ShareButton';
-// import HorizontalScroll from 'react-scroll-horizontal';
 
 function FoodRecipe(props) {
   const { match: { params: { id } } } = props;
