@@ -3,10 +3,35 @@
   position: fixed;
 }
 
-.carousel-inner {
+.carousel {
   display: flex;
+  margin-bottom: 30px;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  scroll-behavior: smooth;
 }
 
-.carousel-item {
-  width: 50%;
+.carousel::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+}
+
+.carousel::-webkit-scrollbar-thumb {
+  background: rgb(202, 44, 44);
+  border-radius: 10px;
+}
+
+.items-div {
+  box-sizing: border-box;
+  padding: 0 5px;
+}
+
+.item-img {
+  height: 160px;
+  width: 170px;
+}
+
+.card2-recomendation, .card3-recomendation, .card4-recomendation, .card5-recomendation {
+  display: none;
 }
