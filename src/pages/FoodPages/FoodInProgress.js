@@ -68,7 +68,15 @@ function FoodInProgress(props) {
   };
 
   const handleFinishedRecipe = () => {
-    setDoneRecipesLocalStorage(id);
+    const favProps = {
+      id: food[0].idMeal,
+      type: 'food',
+      nationality: food[0].strArea,
+      category: food[0].strCategory,
+      alcoholicOrNot: '',
+      name: food[0].strMeal,
+      image: food[0].strMealThumb };
+    setDoneRecipesLocalStorage(favProps);
     history.push('/done-recipes');
   };
 

@@ -8,8 +8,7 @@ function ShareButton({ datatest, link }) {
   const copyURL = () => {
     setCopy(true);
     const returnValue = (window.location.href).replace('/in-progress', ' ').trim();
-    console.log(link);
-    return navigator.clipboard.writeText((link !== undefined ? link : returnValue));
+    return navigator.clipboard.writeText((!link ? returnValue : `http://localhost:3000${link}`));
   };
 
   return (

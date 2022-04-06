@@ -1,26 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header';
 import ShareButton from '../../components/ShareButton';
 import FavoriteButton from '../../components/FavoriteButton';
-import { getLocalStorage } from '../../helpers/localStorageHelper';
 import '../../style/Favorite.css';
+import { favoritesPageLocalStorage } from '../../helpers/localStorageHelper';
 
 function FavoriteRecipes() {
-  const [state, setState] = useState({
-    favoritesList: getLocalStorage('favoriteRecipes'),
-    favoriteFilteredList: getLocalStorage('favoriteRecipes'),
-  });
-
+  const [favoriteFilteredList, setFilteredList] = useState([]);
   const handleSearchInputChange = async ({ target: { value } }) => {
     if (value === 'all') {
-      setState({ ...state, favoriteFilteredList: state.favoritesList });
+      const favoritesList = favoritesPageLocalStorage('favoriteRecipes', '');
+      setFilteredList(favoritesList);
     } if (value === 'food' || value === 'drink') {
-      setState({ ...state,
-        favoriteFilteredList: state.favoritesList
-          .filter((obj) => obj.type === value) });
+      const favoritesList = favoritesPageLocalStorage('favoriteRecipes', '');
+      const result = favoritesList
+        .filter((obj) => obj.type === value);
+      setFilteredList(result);
     }
   };
-
+  useEffect(() => {
+    const favoritesList = favoritesPageLocalStorage('favoriteRecipes', '');
+    setFilteredList(favoritesList);
+  }, []);
+  const renderFather = () => {
+    const favoritesList = favoritesPageLocalStorage('favoriteRecipes', '');
+    setFilteredList(favoritesList);
+  };
   const aHref = (item) => (item.type !== 'food' ? `http://localhost:3000/drinks/${item.id}` : `http://localhost:3000/foods/${item.id}`);
 
   return (
@@ -55,7 +60,7 @@ function FavoriteRecipes() {
           Drinks
         </button>
       </div>
-      {state.favoriteFilteredList ? state.favoriteFilteredList
+      {favoriteFilteredList ? favoriteFilteredList
         .map((item, index) => (
           <div key={ index }>
             <div>
@@ -81,11 +86,12 @@ function FavoriteRecipes() {
                   data-testid={ `${index}-horizontal-name` }
                 >
                   { item.name }
-
                 </h1>
               </a>
             </div>
             <FavoriteButton
+              isFavoriteProp
+              renderFather={ renderFather }
               datatest={ `${index}-horizontal-favorite-btn` }
               localState={ { localId: item.id } }
               favProps={ {
@@ -99,13 +105,12 @@ function FavoriteRecipes() {
             />
             <ShareButton
               datatest={ `${index}-horizontal-share-btn` }
-              link={ item.type !== 'food' ? `http://localhost:3000/drinks/${item.id}`
-                : `http://localhost:3000/foods/${item.id}` }
+              link={ item.type !== 'food' ? `/drinks/${item.id}`
+                : `/foods/${item.id}` }
             />
           </div>
-        )) : null}
+        )) : <h4>There is no Favorites Recipes!</h4>}
     </div>
   );
 }
-
 export default FavoriteRecipes;

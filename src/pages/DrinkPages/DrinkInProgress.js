@@ -69,7 +69,15 @@ function DrinkInProgress(props) {
   };
 
   const handleFinishedRecipe = () => {
-    setDoneRecipesLocalStorage(id);
+    const favProps = {
+      id: drink[0].idDrink,
+      type: 'drink',
+      nationality: '',
+      category: drink[0].strCategory,
+      alcoholicOrNot: drink[0].strAlcoholic,
+      name: drink[0].strDrink,
+      image: drink[0].strDrinkThumb };
+    setDoneRecipesLocalStorage(favProps);
     history.push('/done-recipes');
   };
 

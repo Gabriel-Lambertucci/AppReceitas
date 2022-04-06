@@ -4,8 +4,8 @@ import { getLocalStorage } from '../../helpers/localStorageHelper';
 
 function DoneRecipes() {
   const [state, setState] = useState({
-    favoritesList: getLocalStorage('favoriteRecipes'),
-    favoriteFilteredList: getLocalStorage('favoriteRecipes'),
+    favoritesList: getLocalStorage('doneRecipes'),
+    favoriteFilteredList: getLocalStorage('doneRecipes'),
   });
 
   const handleSearchInputChange = async ({ target: { value } }) => {
@@ -64,7 +64,7 @@ function DoneRecipes() {
             </p>
             <h1 data-testid={ `${index}-horizontal-name` }>{ item.name }</h1>
           </div>
-        )) : null}
+        )) : <h2>Select and do some Cocktails for you!</h2>}
     </div>
   );
 }
