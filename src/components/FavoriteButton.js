@@ -7,7 +7,12 @@ import {
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 
-function FavoriteButton({ localState, favProps, datatest }) {
+function FavoriteButton({
+  localState,
+  favProps,
+  datatest,
+  isFavoriteProp,
+  renderFather }) {
   const [arrayFavorites, setArrayFavorites] = useState([]);
   const { localId } = localState;
   const [isFavorite, setIsFavorite] = useState(() => {
@@ -18,6 +23,13 @@ function FavoriteButton({ localState, favProps, datatest }) {
     }
     return false;
   });
+
+  const heartIcon = () => {
+    if (isFavoriteProp) {
+      return blackHeartIcon;
+    }
+    return isFavorite ? blackHeartIcon : whiteHeartIcon;
+  };
 
   const includeFavorite = () => {
     const {
@@ -40,20 +52,24 @@ function FavoriteButton({ localState, favProps, datatest }) {
     setLocalStorage('favoriteRecipes', ...favoriteDrink);
     setArrayFavorites([...arrayFavorites, ...favoriteDrink]);
     setIsFavorite(true);
+    return ((renderFather !== undefined) && renderFather());
   };
 
   const removeFavorite = () => {
     filterLocalStorage('favoriteRecipes', localId);
     setIsFavorite(false);
+    return ((renderFather !== undefined) && renderFather());
   };
+
+  console.log(datatest);
 
   return (
     <input
       type="image"
-      data-testid={ datatest === null
+      data-testid={ !datatest
         ? 'favorite-btn' : `${datatest}` }
       alt="Heart Icon"
-      src={ isFavorite ? blackHeartIcon : whiteHeartIcon }
+      src={ heartIcon() }
       onClick={ isFavorite === false
         ? () => includeFavorite()
         : () => removeFavorite() }
@@ -75,6 +91,8 @@ FavoriteButton.propTypes = {
     favImage: PropTypes.string.isRequired,
   }).isRequired,
   datatest: PropTypes.string.isRequired,
+  isFavoriteProp: PropTypes.bool.isRequired,
+  renderFather: PropTypes.func.isRequired,
 };
 
 export default FavoriteButton;

@@ -1,25 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 import ShareButton from '../../components/ShareButton';
-import { getLocalStorage } from '../../helpers/localStorageHelper';
-import '../../style/Favorite.css';
+import { donePageLocalStorage } from '../../helpers/localStorageHelper';
 
-function FavoriteRecipes() {
-  const [state, setState] = useState({
-    favoritesList: getLocalStorage('doneRecipes'),
-    favoriteFilteredList: getLocalStorage('doneRecipes'),
-  });
+function DoneRecipes() {
+  const [doneFilteredList, setFilteredList] = useState([]);
 
   const handleSearchInputChange = async ({ target: { value } }) => {
     if (value === 'all') {
-      setState({ ...state, favoriteFilteredList: state.favoritesList });
+      const doneList = donePageLocalStorage('doneRecipes');
+      setFilteredList(doneList);
     } if (value === 'food' || value === 'drink') {
-      setState({ ...state,
-        favoriteFilteredList: state.favoritesList
-          .filter((obj) => obj.type === value) });
+      const doneList = donePageLocalStorage('doneRecipes');
+      const result = doneList
+        .filter((obj) => obj.type === value);
+      setFilteredList(result);
     }
   };
+
+  useEffect(() => {
+    const doneList = donePageLocalStorage('doneRecipes');
+    setFilteredList(doneList);
+  }, []);
+
+  const aHref = (item) => (item.type !== 'food' ? `http://localhost:3000/drinks/${item.id}` : `http://localhost:3000/foods/${item.id}`);
 
   return (
     <div id="main">
@@ -53,13 +57,12 @@ function FavoriteRecipes() {
           Drinks
         </button>
       </div>
-      {state.favoriteFilteredList
+      {doneFilteredList ? doneFilteredList
         .map((item, index) => (
           <div key={ index }>
             <div>
               <a
-                href={ item.type !== 'food' ? `http://localhost:3000/drinks/${item.id}`
-                  : `http://localhost:3000/foods/${item.id}` }
+                href={ aHref(item) }
               >
                 <img
                   className="imgObj"
@@ -74,27 +77,35 @@ function FavoriteRecipes() {
                   : `${item.nationality} - ${item.category}`}
               </p>
               <a
-                href={ item.type !== 'food' ? `http://localhost:3000/drinks/${item.id}`
-                  : `http://localhost:3000/foods/${item.id}` }
+                href={ aHref(item) }
               >
                 <h1
                   data-testid={ `${index}-horizontal-name` }
                 >
                   { item.name }
-
                 </h1>
               </a>
+              <p
+                data-testid={ `${index}-horizontal-done-date` }
+              >
+                {`Done in: ${item.doneDate}`}
+
+              </p>
+              {item.tags.map((tag, ind) => (
+                <div key={ ind }>
+                  <p data-testid={ `${index}-${tag}-horizontal-tag` }>
+                    {tag}
+                  </p>
+                </div>))}
             </div>
             <ShareButton
               datatest={ `${index}-horizontal-share-btn` }
-              link={ item.type !== 'food' ? `http://localhost:3000/drinks/${item.id}`
-                : `http://localhost:3000/foods/${item.id}` }
+              link={ item.type !== 'food' ? `/drinks/${item.id}`
+                : `/foods/${item.id}` }
             />
           </div>
-        ))}
-      <Footer />
+        )) : <h4>There is no Done Recipes!</h4>}
     </div>
   );
 }
-
-export default FavoriteRecipes;
+export default DoneRecipes;

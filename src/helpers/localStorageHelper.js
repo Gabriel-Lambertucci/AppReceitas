@@ -5,10 +5,10 @@ export const setUserLocalStorage = (key, value) => {
 export const setDoneRecipesLocalStorage = (value) => {
   const item = JSON.parse(localStorage.getItem('doneRecipes'));
   if (!item) {
-    localStorage.setItem('doneRecipes', JSON.stringify([{ id: value }]));
+    localStorage.setItem('doneRecipes', JSON.stringify([value]));
   } else {
     const prevState = JSON.parse(localStorage.getItem('doneRecipes'));
-    localStorage.setItem('doneRecipes', JSON.stringify([...prevState, { id: value }]));
+    localStorage.setItem('doneRecipes', JSON.stringify([...prevState, value]));
   }
 };
 
@@ -88,3 +88,11 @@ export const setLocalStorageId = (key, value) => {
     localStorage.setItem(key, JSON.stringify(value));
   }
 };
+
+const getSavedValue = (key) => {
+  const savedValue = JSON.parse(localStorage.getItem(key));
+  return savedValue;
+};
+export const favoritesPageLocalStorage = (key) => getSavedValue(key);
+
+export const donePageLocalStorage = (key) => getSavedValue(key);
