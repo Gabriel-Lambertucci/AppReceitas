@@ -9,6 +9,7 @@ function ShareButton({ datatest, link }) {
     setCopy(true);
     const returnValue = (window.location.href).replace('/in-progress', ' ').trim();
     return navigator.clipboard.writeText((!link ? returnValue : `http://localhost:3000${link}`));
+
   };
 
   return (

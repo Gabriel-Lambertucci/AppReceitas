@@ -49,24 +49,22 @@ function DoneRecipes() {
           Drinks
         </button>
       </div>
-      {!state.favoriteFilteredList
-        ? <h2>Select and do some Cocktails for you!</h2>
-        : (state.favoriteFilteredList
-          .map((item, index) => (
-            <div key={ index } className="card">
-              <img
-                className="imgObj"
-                data-testid={ `${index}-horizontal-image` }
-                src={ item.image }
-                alt={ item.image }
-              />
-              <p data-testid={ `${index}-horizontal-top-text` }>
-                {item.alcoholicOrNot !== '' ? item.alcoholicOrNot
-                  : `${item.nationality} - ${item.category}`}
-              </p>
-              <h3 data-testid={ `${index}-horizontal-name` }>{ item.name }</h3>
-            </div>
-          )))}
+      {state.favoriteFilteredList ? state.favoriteFilteredList
+        .map((item, index) => (
+          <div key={ index } className="card">
+            <img
+              className="imgObj"
+              data-testid={ `${index}-horizontal-image` }
+              src={ item.image }
+              alt={ item.image }
+            />
+            <p data-testid={ `${index}-horizontal-top-text` }>
+              {item.alcoholicOrNot !== '' ? item.alcoholicOrNot
+                : `${item.nationality} - ${item.category}`}
+            </p>
+            <h1 data-testid={ `${index}-horizontal-name` }>{ item.name }</h1>
+          </div>
+        )) : <h2>Select and do some Cocktails for you!</h2>}
     </div>
   );
 }

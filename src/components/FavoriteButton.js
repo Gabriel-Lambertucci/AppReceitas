@@ -47,6 +47,8 @@ function FavoriteButton({ localState, favProps, datatest }) {
     setIsFavorite(false);
   };
 
+  console.log(datatest);
+
   return (
     <input
       type="image"
