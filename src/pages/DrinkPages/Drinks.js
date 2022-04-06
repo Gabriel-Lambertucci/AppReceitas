@@ -31,19 +31,21 @@ function Drinks(props) {
       <Header value="Drinks" img="true" />
       {isFood ? null : <CategoriesButtonsDrinks /> }
       {console.log(drinks)}
-      {isFood ? <h2>Loading...</h2> : drinks.filter(
-        (_item, index) => index < maxDrinks,
-      )
-        .map((item, index) => (
-          <DrinksCard
-            key={ index }
-            name={ item.strDrink }
-            src={ item.strDrinkThumb }
-            index={ index }
-            id={ item.idDrink }
-            history={ history }
-          />
-        ))}
+      {!isFood && drinks
+        ? (drinks.filter(
+          (_item, index) => index < maxDrinks,
+        )
+          .map((item, index) => (
+            <DrinksCard
+              key={ index }
+              name={ item.strDrink }
+              src={ item.strDrinkThumb }
+              index={ index }
+              id={ item.idDrink }
+              history={ history }
+            />
+          )))
+        : <h2>Loading...</h2>}
       <Footer />
     </>
   );

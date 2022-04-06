@@ -88,3 +88,9 @@ export const setLocalStorageId = (key, value) => {
     localStorage.setItem(key, JSON.stringify(value));
   }
 };
+
+const getSavedValue = (key) => {
+  const savedValue = JSON.parse(localStorage.getItem(key));
+  return savedValue;
+};
+export const favoritesPageLocalStorage = (key) => getSavedValue(key);

@@ -1,37 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header';
 import ShareButton from '../../components/ShareButton';
 import FavoriteButton from '../../components/FavoriteButton';
-import { getLocalStorage } from '../../helpers/localStorageHelper';
 import '../../style/Favorite.css';
+import { favoritesPageLocalStorage } from '../../helpers/localStorageHelper';
 
 function FavoriteRecipes() {
-  const [state, setState] = useState({});
-  useEffect(() => {
-    setState({
-      favoritesList: getLocalStorage('favoriteRecipes'),
-      favoriteFilteredList: getLocalStorage('favoriteRecipes'),
-    });
-  }, []);
-
-  console.log((state.favoriteFilteredList));
-
-  const handleSearchInputChange = ({ target: { value } }) => {
+  const [favoriteFilteredList, setFilteredList] = useState([]);
+  const handleSearchInputChange = async ({ target: { value } }) => {
     if (value === 'all') {
-      setState({ ...state, favoriteFilteredList: state.favoritesList });
+      const favoritesList = favoritesPageLocalStorage('favoriteRecipes', '');
+      setFilteredList(favoritesList);
     } if (value === 'food' || value === 'drink') {
-      setState({ ...state,
-        favoriteFilteredList: state.favoritesList
-          .filter((obj) => obj.type === value) });
+      const favoritesList = favoritesPageLocalStorage('favoriteRecipes', '');
+      const result = favoritesList
+        .filter((obj) => obj.type === value);
+      setFilteredList(result);
     }
   };
-
-  const handleURL = (itemType, itemId) => {
-    if (itemType !== 'food') {
-      return `/drinks/${itemId}`;
-    } return `/foods/${itemId}`;
+  useEffect(() => {
+    const favoritesList = favoritesPageLocalStorage('favoriteRecipes', '');
+    setFilteredList(favoritesList);
+  }, []);
+  const renderFather = () => {
+    const favoritesList = favoritesPageLocalStorage('favoriteRecipes', '');
+    setFilteredList(favoritesList);
   };
+  const aHref = (item) => (item.type !== 'food' ? `http://localhost:3000/drinks/${item.id}` : `http://localhost:3000/foods/${item.id}`);
 
   return (
     <div id="main">
@@ -65,58 +60,57 @@ function FavoriteRecipes() {
           Drinks
         </button>
       </div>
-      {!state.favoriteFilteredList
-        ? <h2>No favorite dishes or cocktails!</h2>
-        : (state.favoriteFilteredList
-          .map((item, index) => (
-            <div key={ index }>
-              <div>
-                <Link
-                  to={ () => handleURL(item.type, item.id) }
+      {favoriteFilteredList ? favoriteFilteredList
+        .map((item, index) => (
+          <div key={ index }>
+            <div>
+              <a
+                href={ aHref(item) }
+              >
+                <img
+                  className="imgObj"
+                  data-testid={ `${index}-horizontal-image` }
+                  src={ item.image }
+                  alt={ item.image }
+                  href="https://www.google.com.br"
+                />
+              </a>
+              <p data-testid={ `${index}-horizontal-top-text` }>
+                {item.alcoholicOrNot !== '' ? item.alcoholicOrNot
+                  : `${item.nationality} - ${item.category}`}
+              </p>
+              <a
+                href={ aHref(item) }
+              >
+                <h1
+                  data-testid={ `${index}-horizontal-name` }
                 >
-                  <img
-                    className="imgObj"
-                    data-testid={ `${index}-horizontal-image` }
-                    src={ item.image }
-                    alt={ item.image }
-                    href="https://www.google.com.br"
-                  />
-                </Link>
-                <p data-testid={ `${index}-horizontal-top-text` }>
-                  {item.alcoholicOrNot !== '' ? item.alcoholicOrNot
-                    : `${item.nationality} - ${item.category}`}
-                </p>
-                <Link
-                  to={ () => handleURL(item.type, item.id) }
-                >
-                  <h1
-                    data-testid={ `${index}-horizontal-name` }
-                  >
-                    { item.name }
-
-                  </h1>
-                </Link>
-              </div>
-              <FavoriteButton
-                datatest={ `${index}-horizontal-favorite-btn` }
-                localState={ { localId: item.id } }
-                favProps={ {
-                  favId: item.id,
-                  favType: item.type,
-                  favNationality: item.nationality,
-                  favCategory: item.category,
-                  favAlcoholicOrNot: item.alcoholicOrNot,
-                  favName: item.name,
-                  favImage: item.image } }
-              />
-              <ShareButton
-                datatest={ `${index}-horizontal-share-btn` }
-                link={ handleURL(item.type, item.id) }
-              />
+                  { item.name }
+                </h1>
+              </a>
             </div>
-          )))}
+            <FavoriteButton
+              isFavoriteProp
+              renderFather={ renderFather }
+              datatest={ `${index}-horizontal-favorite-btn` }
+              localState={ { localId: item.id } }
+              favProps={ {
+                favId: item.id,
+                favType: item.type,
+                favNationality: item.nationality,
+                favCategory: item.category,
+                favAlcoholicOrNot: item.alcoholicOrNot,
+                favName: item.name,
+                favImage: item.image } }
+            />
+            <ShareButton
+              datatest={ `${index}-horizontal-share-btn` }
+              link={ item.type !== 'food' ? `/drinks/${item.id}`
+                : `/foods/${item.id}` }
+            />
+          </div>
+        )) : <h4>There is no Favorites Recipes!</h4>}
     </div>
   );
 }
-
 export default FavoriteRecipes;

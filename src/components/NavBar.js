@@ -18,18 +18,6 @@ function NavBar() {
     searchByCategory: '',
   });
 
-  const drinksOrMeals = (isFood ? APIdata.meals : APIdata.drinks);
-
-  useEffect(() => {
-    if (!drinksOrMeals) {
-      return global.alert('Sorry, we haven\'t found any recipes for these filters.');
-    } if (drinksOrMeals.length === 1) {
-      return (isFood
-        ? history.push(`/foods/${drinksOrMeals[0].idMeal}`)
-        : history.push(`/drinks/${drinksOrMeals[0].idDrink}`));
-    }
-  }, [history, isFood, drinksOrMeals]);
-
   // Categoria de url para fetch
   const [url, setUrl] = useState('');
 
@@ -40,6 +28,19 @@ function NavBar() {
       .then((state) => dispatch(dataFetchAPI(state)))
       .catch((error) => error);
   }, [url, dispatch]);
+
+  // Condicionais de alerta para pesquisa na página:
+  const drinksOrMeals = (isFood && APIdata ? APIdata.meals : APIdata.drinks);
+
+  useEffect(() => {
+    if (!drinksOrMeals) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    } else if (drinksOrMeals.length === 1) {
+      return (isFood
+        ? history.push(`/foods/${drinksOrMeals[0].idMeal}`)
+        : history.push(`/drinks/${drinksOrMeals[0].idDrink}`));
+    }
+  }, [history, isFood, drinksOrMeals]);
 
   // Manipula botão de Submit dos filtros:
   const handleFilterSubmit = () => {
