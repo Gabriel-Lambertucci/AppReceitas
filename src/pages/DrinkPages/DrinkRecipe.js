@@ -118,13 +118,18 @@ function DrinkRecipe(props) {
       }
       <div>
         Recommended
-        <div>
+        <div className="carousel">
           {food.map(({ strMeal, strMealThumb }, index2) => (
             index2 < maxRecommended
             && (
-              <div data-testid={ `${index2}-recomendation-card` } key={ index2 }>
+              <div
+                className={ `items-div card${index2}-recomendation` }
+                data-testid={ `${index2}-recomendation-card` }
+                key={ index2 }
+              >
                 <p data-testid={ `${index2}-recomendation-title` }>{ strMeal }</p>
                 <img
+                  className="item-img"
                   src={ strMealThumb }
                   alt={ strMeal }
                 />
