@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { dataFetchAPI } from '../redux/reducers/dataReducer';
 import { filterByCategory, filterByText } from '../redux/reducers/filterReducer';
 import { fetchChangeFoods, fetchChangeDrinks } from '../helpers/navBarFilterHelper';
 
 function NavBar() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const isFood = useSelector((state) => state.data.isFood);
   const APIdata = useSelector((state) => state.data.fetchAPI);
 
@@ -15,6 +17,18 @@ function NavBar() {
     searchByText: '',
     searchByCategory: '',
   });
+
+  const drinksOrMeals = (isFood ? APIdata.meals : APIdata.drinks);
+
+  useEffect(() => {
+    if (!drinksOrMeals) {
+      return global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    } if (drinksOrMeals.length === 1) {
+      return (isFood
+        ? history.push(`/foods/${drinksOrMeals[0].idMeal}`)
+        : history.push(`/drinks/${drinksOrMeals[0].idDrink}`));
+    }
+  }, [history, isFood, drinksOrMeals]);
 
   // Categoria de url para fetch
   const [url, setUrl] = useState('');

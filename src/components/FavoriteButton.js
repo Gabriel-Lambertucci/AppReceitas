@@ -50,7 +50,7 @@ function FavoriteButton({ localState, favProps, datatest }) {
   return (
     <input
       type="image"
-      data-testid={ datatest === null
+      data-testid={ !datatest
         ? 'favorite-btn' : `${datatest}` }
       alt="Heart Icon"
       src={ isFavorite ? blackHeartIcon : whiteHeartIcon }
