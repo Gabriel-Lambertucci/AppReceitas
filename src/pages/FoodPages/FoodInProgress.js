@@ -68,9 +68,8 @@ function FoodInProgress(props) {
   };
 
   const handleFinishedRecipe = () => {
-    const time = new Date().toLocaleTimeString();
     const date = new Date().toLocaleDateString();
-    const dateTime = `${date} ${time}`;
+    const dateTime = `${date}`;
 
     const favProps = {
       id: food[0].idMeal,

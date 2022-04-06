@@ -94,3 +94,5 @@ const getSavedValue = (key) => {
   return savedValue;
 };
 export const favoritesPageLocalStorage = (key) => getSavedValue(key);
+
+export const donePageLocalStorage = (key) => getSavedValue(key);
