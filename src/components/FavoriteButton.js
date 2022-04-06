@@ -7,7 +7,7 @@ import {
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 
-function FavoriteButton({ localState, favProps }) {
+function FavoriteButton({ localState, favProps, datatest }) {
   const [arrayFavorites, setArrayFavorites] = useState([]);
   const { localId } = localState;
   const [isFavorite, setIsFavorite] = useState(() => {
@@ -50,7 +50,8 @@ function FavoriteButton({ localState, favProps }) {
   return (
     <input
       type="image"
-      data-testid="favorite-btn"
+      data-testid={ datatest === null
+        ? 'favorite-btn' : `${datatest}` }
       alt="Heart Icon"
       src={ isFavorite ? blackHeartIcon : whiteHeartIcon }
       onClick={ isFavorite === false
@@ -73,6 +74,7 @@ FavoriteButton.propTypes = {
     favName: PropTypes.string.isRequired,
     favImage: PropTypes.string.isRequired,
   }).isRequired,
+  datatest: PropTypes.string.isRequired,
 };
 
 export default FavoriteButton;
