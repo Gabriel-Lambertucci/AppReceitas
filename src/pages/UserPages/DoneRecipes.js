@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import ShareButton from '../../components/ShareButton';
 import { getLocalStorage } from '../../helpers/localStorageHelper';
+import '../../style/Favorite.css';
 
-function DoneRecipes() {
+function FavoriteRecipes() {
   const [state, setState] = useState({
-    favoritesList: getLocalStorage('favoriteRecipes'),
-    favoriteFilteredList: getLocalStorage('favoriteRecipes'),
+    favoritesList: getLocalStorage('doneRecipes'),
+    favoriteFilteredList: getLocalStorage('doneRecipes'),
   });
 
   const handleSearchInputChange = async ({ target: { value } }) => {
@@ -17,9 +20,10 @@ function DoneRecipes() {
           .filter((obj) => obj.type === value) });
     }
   };
+
   return (
     <div id="main">
-      <Header value="Done Recipes" img="false" />
+      <Header value="Done Recipes" />
       <div>
         <button
           type="button"
@@ -51,22 +55,46 @@ function DoneRecipes() {
       </div>
       {state.favoriteFilteredList
         .map((item, index) => (
-          <div key={ index } className="card">
-            <img
-              className="imgObj"
-              data-testid={ `${index}-horizontal-image` }
-              src={ item.image }
-              alt={ item.image }
+          <div key={ index }>
+            <div>
+              <a
+                href={ item.type !== 'food' ? `http://localhost:3000/drinks/${item.id}`
+                  : `http://localhost:3000/foods/${item.id}` }
+              >
+                <img
+                  className="imgObj"
+                  data-testid={ `${index}-horizontal-image` }
+                  src={ item.image }
+                  alt={ item.image }
+                  href="https://www.google.com.br"
+                />
+              </a>
+              <p data-testid={ `${index}-horizontal-top-text` }>
+                {item.alcoholicOrNot !== '' ? item.alcoholicOrNot
+                  : `${item.nationality} - ${item.category}`}
+              </p>
+              <a
+                href={ item.type !== 'food' ? `http://localhost:3000/drinks/${item.id}`
+                  : `http://localhost:3000/foods/${item.id}` }
+              >
+                <h1
+                  data-testid={ `${index}-horizontal-name` }
+                >
+                  { item.name }
+
+                </h1>
+              </a>
+            </div>
+            <ShareButton
+              datatest={ `${index}-horizontal-share-btn` }
+              link={ item.type !== 'food' ? `http://localhost:3000/drinks/${item.id}`
+                : `http://localhost:3000/foods/${item.id}` }
             />
-            <p data-testid={ `${index}-horizontal-top-text` }>
-              {item.alcoholicOrNot !== '' ? item.alcoholicOrNot
-                : `${item.nationality} - ${item.category}`}
-            </p>
-            <h1 data-testid={ `${index}-horizontal-name` }>{ item.name }</h1>
           </div>
         ))}
+      <Footer />
     </div>
   );
 }
 
-export default DoneRecipes;
+export default FavoriteRecipes;
