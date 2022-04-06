@@ -49,7 +49,7 @@ function DoneRecipes() {
           Drinks
         </button>
       </div>
-      {state.favoriteFilteredList
+      {state.favoriteFilteredList ? state.favoriteFilteredList
         .map((item, index) => (
           <div key={ index } className="card">
             <img
@@ -64,7 +64,7 @@ function DoneRecipes() {
             </p>
             <h1 data-testid={ `${index}-horizontal-name` }>{ item.name }</h1>
           </div>
-        ))}
+        )) : null}
     </div>
   );
 }
