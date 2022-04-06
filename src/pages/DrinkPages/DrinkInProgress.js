@@ -69,6 +69,10 @@ function DrinkInProgress(props) {
   };
 
   const handleFinishedRecipe = () => {
+    const time = new Date().toLocaleTimeString();
+    const date = new Date().toLocaleDateString();
+    const dateTime = `${date} ${time}`;
+
     const favProps = {
       id: drink[0].idDrink,
       type: 'drink',
@@ -76,7 +80,9 @@ function DrinkInProgress(props) {
       category: drink[0].strCategory,
       alcoholicOrNot: drink[0].strAlcoholic,
       name: drink[0].strDrink,
-      image: drink[0].strDrinkThumb };
+      image: drink[0].strDrinkThumb,
+      doneDate: dateTime,
+      tags: (!drink[0].strTags ? [] : drink[0].strTags.split(',')) };
     setDoneRecipesLocalStorage(favProps);
     history.push('/done-recipes');
   };
