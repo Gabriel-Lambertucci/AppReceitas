@@ -68,6 +68,10 @@ function FoodInProgress(props) {
   };
 
   const handleFinishedRecipe = () => {
+    const time = new Date().toLocaleTimeString();
+    const date = new Date().toLocaleDateString();
+    const dateTime = `${date} ${time}`;
+
     const favProps = {
       id: food[0].idMeal,
       type: 'food',
@@ -75,7 +79,9 @@ function FoodInProgress(props) {
       category: food[0].strCategory,
       alcoholicOrNot: '',
       name: food[0].strMeal,
-      image: food[0].strMealThumb };
+      image: food[0].strMealThumb,
+      doneDate: dateTime,
+      tags: (!food[0].strTags ? [] : food[0].strTags.split(',')) };
     setDoneRecipesLocalStorage(favProps);
     history.push('/done-recipes');
   };
