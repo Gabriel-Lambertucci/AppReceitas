@@ -7,7 +7,6 @@ import '../../style/FoodRecipe.css';
 import ShareButton from '../../components/ShareButton';
 import { getInProgressLocalStorage,
   getLocalStorage } from '../../helpers/localStorageHelper';
-import 'bootstrap/dist/css/bootstrap.css';
 
 function FoodRecipe(props) {
   const { match: { params: { id } } } = props;

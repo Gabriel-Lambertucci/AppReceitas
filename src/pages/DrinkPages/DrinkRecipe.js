@@ -7,7 +7,6 @@ import '../../style/DrinkRecipe.css';
 import { getInProgressLocalStorage,
   getLocalStorage } from '../../helpers/localStorageHelper';
 import ShareButton from '../../components/ShareButton';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function DrinkRecipe(props) {
   const dispatch = useDispatch();
