@@ -30,7 +30,7 @@ function FavoriteRecipes() {
 
   return (
     <div id="main">
-      <Header value="Favorite Recipes" />
+      <Header value="Favorite Recipes" img="false" />
       <div>
         <button
           type="button"

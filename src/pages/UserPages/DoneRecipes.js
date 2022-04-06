@@ -27,7 +27,7 @@ function DoneRecipes() {
 
   return (
     <div id="main">
-      <Header value="Done Recipes" />
+      <Header value="Done Recipes" img="false" />
       <div>
         <button
           type="button"
