@@ -176,12 +176,6 @@ Aqui você vai encontrar os detalhes de como estruturar o desenvolvimento do seu
   - [87 - Redirecione a pessoa usuária que, ao clicar no botão de "Logout", o `localStorage` deve ser limpo e a rota deve mudar para a tela de login](#87---redirecione-a-pessoa-usuária-que-ao-clicar-no-botão-de-logout-o-localstorage-deve-ser-limpo-e-a-rota-deve-mudar-para-a-tela-de-login)
   </details>
 
-- [Depois de terminar o desenvolvimento (opcional)](#depois-de-terminar-o-desenvolvimento-opcional)
-- [Revisando um pull request](#revisando-um-pull-request)
-- [Avisos finais](#avisos-finais)
-
----
-
 # Habilidades
 
 Nesse projeto, você será capaz de:
