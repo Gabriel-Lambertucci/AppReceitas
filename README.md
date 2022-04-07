@@ -1,8 +1,6 @@
 # Boas vindas ao repositório do projeto de Receitas!
 
-Você já usa o GitHub diariamente para desenvolver os exercícios, certo? Agora, para desenvolver os projetos, você deverá seguir as instruções a seguir. Fique atento a cada passo, e se tiver qualquer dúvida, nos envie por _Slack_! #vqv 🚀
-
-Aqui você vai encontrar os detalhes de como estruturar o desenvolvimento do seu projeto a partir desse repositório, utilizando uma branch específica e um _Pull Request_ para colocar seus códigos.
+Aqui você vai encontrar os detalhes de como foi estruturado o desenvolvimento do projeto.
 
 ---
 
@@ -10,7 +8,7 @@ Aqui você vai encontrar os detalhes de como estruturar o desenvolvimento do seu
 
 - [Habilidades](#habilidades)
 
-- [O que deverá ser desenvolvido](#o-que-deverá-ser-desenvolvido)
+- [O que foi desenvolvido](#o-que-deverá-ser-desenvolvido)
   
   <details>
     <summary>Testes unitários</summary>
@@ -190,7 +188,7 @@ Nesse projeto, você será capaz de:
 
 ---
 
-## O que deverá ser desenvolvido
+## O que foi desenvolvido
 
 Você irá desenvolver um app de receitas, utilizando o que há de mais moderno dentro do ecossistema React: Hooks e Context API!
 
