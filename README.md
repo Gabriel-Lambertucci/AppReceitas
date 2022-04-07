@@ -11,8 +11,6 @@ Aqui você vai encontrar os detalhes de como estruturar o desenvolvimento do seu
 - [Habilidades](#habilidades)
 
 - [O que deverá ser desenvolvido](#o-que-deverá-ser-desenvolvido)
-
-- [Lista de requisitos](#lista-de-requisitos)
   
   <details>
     <summary>Testes unitários</summary>
