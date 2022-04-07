@@ -22,6 +22,7 @@ import ExploreDrinksIngredients from '../pages/DrinkPages/ExploreDrinksIngredien
 import Profile from '../pages/UserPages/Profile';
 import DoneRecipes from '../pages/UserPages/DoneRecipes';
 import FavoriteRecipes from '../pages/UserPages/FavoriteRecipes';
+import NotFound from '../pages/NotFound';
 
 function Routes() {
   return (
@@ -55,6 +56,11 @@ function Routes() {
           exact
           path="/explore/drinks/ingredients"
           component={ ExploreDrinksIngredients }
+        />
+        <Route
+          exact
+          path="/explore/drinks/nationalities"
+          component={ NotFound }
         />
 
         <Route exact path="/profile" component={ Profile } />
