@@ -10,21 +10,9 @@ Aqui você vai encontrar os detalhes de como estruturar o desenvolvimento do seu
 
 - [Habilidades](#habilidades)
 
-- [Entregáveis](#entregáveis)
-  - [O que deverá ser desenvolvido](#o-que-deverá-ser-desenvolvido)
-    - [Protótipo do projeto](#protótipo-do-projeto)
-  - [Desenvolvimento](#desenvolvimento)
-  - [Data de entrega](#data-de-entrega)
+- [O que deverá ser desenvolvido](#o-que-deverá-ser-desenvolvido)
 
-
-- [Requisitos do projeto](#requisitos-do-projeto)
-  - [Observações técnicas](#observações-técnicas)
-    - [Rotas](#rotas)
-    - [localStorage](#localstorage)
-    - [Ícones](#ícones)
-    - [Biblioteca clipboard-copy](#biblioteca-clipboard-copy)
-    - [Biblioteca Bootstrap (opcional)](#biblioteca-bootstrap-opcional)
-  - [Lista de requisitos](#lista-de-requisitos)
+- [Lista de requisitos](#lista-de-requisitos)
   
   <details>
     <summary>Testes unitários</summary>
