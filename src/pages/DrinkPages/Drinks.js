@@ -15,9 +15,11 @@ function Drinks(props) {
   const { isFood, fetchAPI: { drinks } } = useSelector((state) => state.data);
 
   useEffect(() => {
-    fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=')
-      .then((response) => response.json())
-      .then((responseData) => dispatch(dataFetchAPI(responseData)));
+    if (!drinks) {
+      fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=')
+        .then((response) => response.json())
+        .then((responseData) => dispatch(dataFetchAPI(responseData)));
+    }
   }, [dispatch]);
 
   useEffect(() => {

@@ -15,10 +15,12 @@ function Foods(props) {
   const dispatch = useDispatch();
   const { isFood, fetchAPI: { meals } } = useSelector((state) => state.data);
   useEffect(() => {
-    fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=')
-      .then((response) => response.json())
-      .then((responseData) => dispatch(dataFetchAPI(responseData)));
-    dispatch(dataIsFood(true));
+    if (!meals) {
+      fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=')
+        .then((response) => response.json())
+        .then((responseData) => dispatch(dataFetchAPI(responseData)));
+      dispatch(dataIsFood(true));
+    }
   }, [dispatch]);
 
   return (
