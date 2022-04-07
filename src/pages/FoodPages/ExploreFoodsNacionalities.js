@@ -20,7 +20,6 @@ function ExploreFoodsNacionalities(props) {
   }, []);
 
   const onChangeHandler = ({ target }) => {
-    console.log(target.value);
     if (target.value !== 'All') {
       fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${target.value}`)
         .then((response) => response.json())
@@ -34,7 +33,6 @@ function ExploreFoodsNacionalities(props) {
 
   return (
     <div>
-      {console.log(nacionalities)}
       <Header value="Explore Nationalities" img="true" />
       <label htmlFor="dropdown">
         <select

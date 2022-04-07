@@ -5,13 +5,10 @@ let link = '';
 
 function FetchHelper() {
   const globalStatefilter = useSelector((state) => state.filter);
-  console.log(globalStatefilter);
   const [state, setState] = useState({ url: '' });
 
   useEffect(() => {
-    console.log(state.url);
     if (globalStatefilter.searchByCategory === 'ingredients') {
-      console.log('entrei');
       link = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${globalStatefilter.searchByText}`;
     }
     if (globalStatefilter.searchByCategory === 'name') {
@@ -24,7 +21,6 @@ function FetchHelper() {
   }, [globalStatefilter.searchByText, globalStatefilter.searchByCategory, state.url]);
 
   const apiFetch = async (paramURL) => {
-    console.log(paramURL);
     const response = await fetch(paramURL);
     const data = await response.json();
     return data;

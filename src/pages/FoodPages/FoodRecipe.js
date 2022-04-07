@@ -137,7 +137,6 @@ function FoodRecipe(props) {
           ))}
         </div>
       </div>
-      {console.log(isDone)}
       { isDone ? null : (
         <Link to={ `/foods/${id}/in-progress` }>
           <button

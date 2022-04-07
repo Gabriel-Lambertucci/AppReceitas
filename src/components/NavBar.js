@@ -46,10 +46,8 @@ function NavBar() {
   const handleFilterSubmit = () => {
     dispatch(filterByCategory(categories.searchByCategory));
     dispatch(filterByText(categories.searchByText));
-    console.log(APIdata);
 
     // Lida com páginas diferentes de Foods e Drinks
-    console.log(isFood);
     return (isFood
       ? setUrl(fetchChangeFoods(categories.searchByText, categories.searchByCategory))
       : setUrl(fetchChangeDrinks(categories.searchByText, categories.searchByCategory)));

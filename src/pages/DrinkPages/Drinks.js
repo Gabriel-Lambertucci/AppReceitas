@@ -32,7 +32,6 @@ function Drinks(props) {
     <>
       <Header value="Drinks" img="true" />
       {isFood ? null : <CategoriesButtonsDrinks /> }
-      {console.log(drinks)}
       {!isFood && drinks
         ? (drinks.filter(
           (_item, index) => index < maxDrinks,

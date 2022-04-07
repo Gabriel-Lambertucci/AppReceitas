@@ -61,8 +61,6 @@ function FavoriteButton({
     return ((renderFather !== undefined) && renderFather());
   };
 
-  console.log(datatest);
-
   return (
     <input
       type="image"

@@ -17,7 +17,6 @@ function ExploreFoodsIngredients(props) {
       const response = await fetch(INGREDIENTS);
       const data = await response.json();
       const { meals } = data;
-      console.log('MEALS', meals);
       setIngredients(meals);
     })();
   }, []);
