@@ -190,10 +190,10 @@ Nesse projeto, você será capaz de:
 
 ## O que foi desenvolvido
 
-Você irá desenvolver um app de receitas, utilizando o que há de mais moderno dentro do ecossistema React: Hooks e Context API!
+Um app de receitas, utilizando o que há de mais moderno dentro do ecossistema React: Hooks e Context API!
 
-Nele será possível ver, buscar, filtrar, favoritar e acompanhar o progresso de preparação de receitas e drinks!
+Nele é possível ver, buscar, filtrar, favoritar e acompanhar o progresso de preparação de receitas e drinks!
 
-A base de dados serão 2 APIs distintas, uma para comidas e outra para bebidas.
+A base de dados são 2 APIs distintas, uma para comidas e outra para bebidas.
 
-O layout tem como foco dispositivos móveis, então todos os protótipos vão estar desenvolvidos em telas menores.
+O layout tem como foco dispositivos móveis, então todos os protótipos estão desenvolvidos em telas menores.
